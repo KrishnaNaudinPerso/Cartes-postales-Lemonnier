@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Collection Lemonnier-Décré — Cartes Postales 1900-1935</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --sepia: #f5f0e8;
+    --sepia-dark: #e8dfd0;
+    --ink: #2c2417;
+    --ink-light: #5a4d3a;
+    --accent: #8b4513;
+    --accent-light: #c4956a;
+    --blue-link: #4a6fa5;
+    --card-bg: #fffdf7;
+    --shadow: rgba(44, 36, 23, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  .wip-banner {
+    background: #d4a017;
+    color: #2c2417;
+    text-align: center;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+  }
+
+  body {
+    font-family: 'Source Sans 3', 'Georgia', serif;
+    background: var(--sepia);
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* === HERO === */
+  .hero {
+    background: linear-gradient(135deg, #3d2b1f 0%, #5c3d2e 50%, #2c2417 100%);
+    color: var(--sepia);
+    padding: 4rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    position: relative;
+  }
+  .hero .subtitle {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.2rem;
+    font-style: italic;
+    opacity: 0.85;
+    margin-bottom: 2rem;
+    position: relative;
+  }
+  .hero .stats-bar {
+    display: flex;
+    justify-content: center;
+    gap: 3rem;
+    flex-wrap: wrap;
+    position: relative;
+  }
+  .stat { text-align: center; }
+  .stat .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    font-weight: 700;
+    display: block;
+    color: var(--accent-light);
+  }
+  .stat .label { font-size: 0.85rem; text-transform: uppercase; letter-spacing: 0.1em; opacity: 0.7; }
+
+  /* === NAV === */
+  nav {
+    background: var(--ink);
+    padding: 0.8rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  nav a {
+    color: var(--sepia-dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  nav a:hover { color: var(--accent-light); }
+
+  /* === SECTIONS === */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 1.5rem; }
+
+  section {
+    padding: 3.5rem 0;
+  }
+  section:nth-child(even) { background: var(--card-bg); }
+
+  h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--sepia-dark);
+  }
+  h3 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    color: var(--ink);
+    margin: 1.5rem 0 0.8rem;
+  }
+  p { margin-bottom: 1rem; max-width: 75ch; }
+
+  /* === TREE === */
+  .family-tree {
+    background: var(--card-bg);
+    border: 1px solid var(--sepia-dark);
+    border-radius: 8px;
+    padding: 2rem;
+    font-family: 'Source Sans 3', sans-serif;
+    overflow-x: auto;
+    box-shadow: 0 2px 12px var(--shadow);
+  }
+  .tree-level { margin-left: 2rem; border-left: 2px solid var(--accent-light); padding-left: 1.5rem; margin-top: 0.5rem; }
+  .tree-person {
+    padding: 0.4rem 0;
+    position: relative;
+  }
+  .tree-person::before {
+    content: '';
+    position: absolute;
+    left: -1.5rem;
+    top: 50%;
+    width: 1.2rem;
+    height: 2px;
+    background: var(--accent-light);
+  }
+  .tree-name { font-weight: 600; color: var(--ink); }
+  .tree-dates { color: var(--ink-light); font-size: 0.9rem; }
+  .tree-role { font-style: italic; color: var(--accent); font-size: 0.85rem; }
+  .tree-root { font-size: 1.1rem; font-weight: 700; border-left: none; margin-left: 0; padding-left: 0; }
+  .tree-root::before { display: none; }
+  .tree-marriage {
+    display: inline-block;
+    background: var(--sepia-dark);
+    padding: 0.15rem 0.6rem;
+    border-radius: 3px;
+    font-size: 0.8rem;
+    color: var(--ink-light);
+    margin: 0.3rem 0;
+  }
+
+  /* === PERSONNAGES === */
+  .person-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+  }
+  .person-card {
+    background: var(--card-bg);
+    border: 1px solid var(--sepia-dark);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px var(--shadow);
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+  }
+  .person-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px var(--shadow); }
+  .person-card .name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: var(--accent);
+    margin-bottom: 0.3rem;
+  }
+  .person-card .meta {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    margin-bottom: 0.8rem;
+  }
+  .person-card .badge {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 0.15rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .person-card .bio { font-size: 0.95rem; line-height: 1.6; }
+
+  /* === TIMELINE === */
+  .timeline { position: relative; margin: 2rem 0; padding-left: 2.5rem; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0.75rem;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent-light), var(--sepia-dark));
+    border-radius: 2px;
+  }
+  .tl-item { position: relative; margin-bottom: 2rem; }
+  .tl-item::before {
+    content: '';
+    position: absolute;
+    left: -2.05rem;
+    top: 0.4rem;
+    width: 12px;
+    height: 12px;
+    background: var(--accent);
+    border: 3px solid var(--sepia);
+    border-radius: 50%;
+  }
+  .tl-year {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .tl-text { font-size: 0.95rem; color: var(--ink-light); margin-top: 0.2rem; }
+
+  /* === CARTE EXEMPLE === */
+  .card-sample {
+    background: var(--card-bg);
+    border: 1px solid var(--sepia-dark);
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin: 1rem 0;
+    box-shadow: 0 2px 8px var(--shadow);
+    position: relative;
+  }
+  .card-sample::before {
+    content: '✉';
+    position: absolute;
+    top: -0.5rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    opacity: 0.3;
+  }
+  .card-sample .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 0.8rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .card-sample .card-num {
+    font-family: 'Playfair Display', serif;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .card-sample .card-sender { font-weight: 600; }
+  .card-sample .card-context { font-size: 0.8rem; color: var(--ink-light); }
+  .card-sample blockquote {
+    font-family: 'Source Serif 4', serif;
+    font-style: italic;
+    color: var(--ink-light);
+    border-left: 3px solid var(--accent-light);
+    padding: 0.8rem 1.2rem;
+    margin: 0.5rem 0;
+    background: rgba(139, 69, 19, 0.03);
+    border-radius: 0 4px 4px 0;
+    line-height: 1.8;
+  }
+
+  /* === MAP SECTION === */
+  .places-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+  }
+  .place-tag {
+    background: var(--card-bg);
+    border: 1px solid var(--sepia-dark);
+    border-radius: 6px;
+    padding: 0.8rem 1rem;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+  .place-tag .place-name { font-weight: 600; color: var(--accent); }
+  .place-tag .place-detail { font-size: 0.85rem; color: var(--ink-light); }
+
+  /* === FOOTER === */
+  footer {
+    background: var(--ink);
+    color: var(--sepia-dark);
+    padding: 2rem;
+    text-align: center;
+    font-size: 0.85rem;
+  }
+  footer a { color: var(--accent-light); }
+
+  /* === CATALOG === */
+  .catalog-filters {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 1.5rem;
+  }
+  #search-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--sepia-dark);
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--card-bg);
+    color: var(--ink);
+  }
+  #search-input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 3px rgba(139,69,19,0.15); }
+  #sender-filter {
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--sepia-dark);
+    border-radius: 6px;
+    font-size: 0.95rem;
+    font-family: 'Source Sans 3', sans-serif;
+    background: var(--card-bg);
+    color: var(--ink);
+    max-width: 300px;
+  }
+  .filter-stats { font-size: 0.85rem; color: var(--ink-light); white-space: nowrap; }
+
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .cat-card {
+    background: var(--card-bg);
+    border: 1px solid var(--sepia-dark);
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 1px 4px var(--shadow);
+  }
+  .cat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 16px var(--shadow); }
+  .cat-thumb {
+    height: 140px;
+    overflow: hidden;
+    background: var(--sepia-dark);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cat-thumb img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s;
+  }
+  .cat-card:hover .cat-thumb img { transform: scale(1.05); }
+  .cat-num {
+    position: absolute;
+    top: 0.5rem;
+    left: 0.5rem;
+    background: rgba(44, 36, 23, 0.8);
+    color: var(--sepia);
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+  .cat-info { padding: 0.8rem; }
+  .cat-sender { font-weight: 600; color: var(--ink); font-size: 0.9rem; margin-bottom: 0.2rem; }
+  .cat-date { font-size: 0.8rem; color: var(--accent); margin-bottom: 0.3rem; }
+  .cat-preview { font-size: 0.82rem; color: var(--ink-light); line-height: 1.4; }
+
+  .catalog-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.3rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .catalog-pagination button {
+    padding: 0.4rem 0.8rem;
+    border: 1px solid var(--sepia-dark);
+    background: var(--card-bg);
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--ink);
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .catalog-pagination button:hover { background: var(--sepia-dark); }
+  .catalog-pagination button.active {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+  }
+  .pag-dots { padding: 0 0.3rem; color: var(--ink-light); }
+
+  /* === LIGHTBOX === */
+  .lightbox {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    z-index: 1000;
+  }
+  .lightbox.open { display: flex; align-items: center; justify-content: center; }
+  .lightbox-backdrop {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.7);
+  }
+  .lightbox-content {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 12px;
+    width: 95vw;
+    max-width: 1100px;
+    max-height: 92vh;
+    overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+    z-index: 1;
+  }
+  .lightbox-close {
+    position: absolute;
+    top: 0.8rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 2rem;
+    color: var(--ink-light);
+    cursor: pointer;
+    z-index: 2;
+    line-height: 1;
+  }
+  .lightbox-close:hover { color: var(--accent); }
+  .lightbox-nav {
+    position: absolute;
+    top: 50%;
+    left: 0; right: 0;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 2;
+    padding: 0 0.5rem;
+    transform: translateY(-50%);
+  }
+  .lb-prev, .lb-next {
+    pointer-events: auto;
+    background: rgba(44,36,23,0.7);
+    color: white;
+    border: none;
+    font-size: 1.5rem;
+    padding: 0.8rem 1rem;
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+  .lb-prev:hover, .lb-next:hover { background: var(--accent); }
+  .lightbox-header {
+    padding: 1.2rem 1.5rem 0.5rem;
+    border-bottom: 1px solid var(--sepia-dark);
+  }
+  .lb-card-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .lightbox-body {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    min-height: 400px;
+  }
+  .lightbox-images {
+    border-right: 1px solid var(--sepia-dark);
+    display: flex;
+    flex-direction: column;
+  }
+  .lb-img-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--sepia-dark);
+  }
+  .lb-tab {
+    flex: 1;
+    padding: 0.6rem;
+    border: none;
+    background: var(--sepia);
+    cursor: pointer;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    transition: all 0.2s;
+  }
+  .lb-tab.active { background: var(--card-bg); color: var(--accent); font-weight: 600; border-bottom: 2px solid var(--accent); }
+  .lb-img-container {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: auto;
+    background: var(--sepia-dark);
+    min-height: 350px;
+    position: relative;
+    cursor: zoom-in;
+  }
+  #lb-image {
+    max-width: 100%;
+    max-height: 60vh;
+    object-fit: contain;
+    transition: transform 0.3s;
+  }
+  #lb-image.zoomed {
+    max-width: none;
+    max-height: none;
+    transform: scale(2);
+    cursor: zoom-out;
+  }
+  .lb-img-zoom-hint {
+    position: absolute;
+    bottom: 0.5rem;
+    right: 0.5rem;
+    background: rgba(0,0,0,0.5);
+    color: white;
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+  .lightbox-text {
+    padding: 1.2rem 1.5rem;
+    overflow-y: auto;
+    max-height: 70vh;
+  }
+  .lb-section { margin-bottom: 1rem; }
+  .lb-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--accent);
+    font-weight: 600;
+    margin-bottom: 0.2rem;
+  }
+  .lb-value { font-size: 0.95rem; color: var(--ink); }
+  .lb-transcription {
+    font-family: 'Source Serif 4', serif;
+    font-size: 0.95rem;
+    line-height: 1.8;
+    color: var(--ink);
+    background: rgba(139,69,19,0.03);
+    padding: 1rem;
+    border-left: 3px solid var(--accent-light);
+    border-radius: 0 4px 4px 0;
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+  .lb-notes {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    font-style: italic;
+  }
+
+  @media (max-width: 768px) {
+    .lightbox-body { grid-template-columns: 1fr; }
+    .lightbox-images { border-right: none; border-bottom: 1px solid var(--sepia-dark); }
+    .lightbox-nav { display: none; }
+  }
+
+  /* === RESPONSIVE === */
+  @media (max-width: 600px) {
+    .hero { padding: 2.5rem 1rem; }
+    .hero .stats-bar { gap: 1.5rem; }
+    .stat .num { font-size: 1.8rem; }
+    .person-grid { grid-template-columns: 1fr; }
+    .tree-level { margin-left: 1rem; padding-left: 1rem; }
+    nav { gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- BANDEAU TRAVAIL EN COURS -->
+<div class="wip-banner">Ce site est un travail en cours — les transcriptions et identifications sont progressivement corrigées et enrichies.</div>
+
+<!-- HERO -->
+<header class="hero">
+  <h1>Collection Lemonnier-Décré</h1>
+  <p class="subtitle">461 cartes postales familiales — Ernée, Mayenne — 1900 à 1935</p>
+  <div class="stats-bar">
+    <div class="stat"><span class="num">461</span><span class="label">Cartes postales</span></div>
+    <div class="stat"><span class="num">35</span><span class="label">Années couvertes</span></div>
+    <div class="stat"><span class="num">129</span><span class="label">Correspondants</span></div>
+    <div class="stat"><span class="num">3</span><span class="label">Générations</span></div>
+  </div>
+</header>
+
+<!-- NAV -->
+<nav>
+  <a href="#introduction">Introduction</a>
+  <a href="#arbre">Arbre familial</a>
+  <a href="#personnages">Personnages</a>
+  <a href="#chronologie">Chronologie</a>
+  <a href="#extraits">Extraits</a>
+  <a href="#lieux">Lieux</a>
+  <a href="#catalogue">Catalogue</a>
+</nav>
+
+<!-- INTRODUCTION -->
+<section id="introduction">
+  <div class="container">
+    <h2>Une famille à travers ses cartes postales</h2>
+    <p>Cette collection de 461 cartes postales raconte l'histoire de la famille Lemonnier-Décré sur plus de trois décennies, de la Belle Époque aux Années folles. Envoyées à <strong>Eulalie Zoé Marguerite Lemonnier</strong> (née Décré, 1867-1938), institutrice et veuve résidant au 13 rue Clouard à Ernée en Mayenne, elles dessinent le portrait intime d'une famille de la petite bourgeoisie provinciale française.</p>
+    <p>Des tranchées de Salonique aux plages de Pornichet, de l'École des Arts et Métiers d'Angers aux casernes de Tunisie, ces cartes nous font voyager à travers le quotidien, les joies et les épreuves d'une famille ordinaire prise dans les tourments du XXe siècle.</p>
+    <p>La collection a été transmise d'Eulalie à son fils Guy, puis de génération en génération au sein de la famille.</p>
+  </div>
+</section>
+
+<!-- ARBRE FAMILIAL -->
+<section id="arbre">
+  <div class="container">
+    <h2>L'arbre familial</h2>
+    <div class="family-tree">
+
+      <div class="tree-root tree-person">
+        <span class="tree-name">Émile Décré</span>
+        <span class="tree-dates"> — 1831-1868 (†36 ans)</span>
+        <span class="tree-role"> — père d'Eulalie et Marie</span>
+      </div>
+
+      <div class="tree-level">
+
+        <div class="tree-person">
+          <span class="tree-name">Eulalie Zoé Marguerite Décré</span>
+          <span class="tree-dates"> — 1867, Laval – 1938, Laval (†70 ans)</span>
+          <span class="tree-role"> — destinataire principale de la collection</span>
+          <br><span class="tree-marriage">× Michel Jean Baptiste Lemonnier (1861-1910, †48 ans), mécanicien, Ernée</span>
+
+          <div class="tree-level">
+            <div class="tree-person">
+              <span class="tree-name">Yvonne Michelle Eulalie Lemonnier</span>
+              <span class="tree-dates"> — *1893, Ernée (10 ans de plus que Guy)</span>
+              <span class="tree-role"> — fille aînée</span>
+            </div>
+
+            <div class="tree-person">
+              <span class="tree-name">Guy Michel Albert Lemonnier</span>
+              <span class="tree-dates"> — 1903, Ernée – 1979, Laval (†75 ans)</span>
+              <span class="tree-role"> — fils, ingénieur ENSAM, 38 cartes</span>
+              <br><span class="tree-marriage">× Augusta Boulay (1907-1993, †86 ans), Craon — mariage le 9 nov. 1931 (lui 28 ans, elle 24 ans)</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="tree-person" style="margin-top: 1.5rem;">
+          <span class="tree-name">Marie Décré</span>
+          <span class="tree-dates"> — ~1865 (2 ans de plus qu'Eulalie ?)</span>
+          <span class="tree-role"> — sœur d'Eulalie, 34 cartes</span>
+
+          <div class="tree-level">
+            <div class="tree-person">
+              <span class="tree-name">René Décré</span>
+              <span class="tree-dates"> — ~1890 (aîné)</span>
+              <span class="tree-role"> — neveu d'Eulalie</span>
+            </div>
+            <div class="tree-person">
+              <span class="tree-name">Georges Décré</span>
+              <span class="tree-dates"> — ~1893 (~22 ans en 1915 à la mobilisation)</span>
+              <span class="tree-role"> — ingénieur S.M.I.E., 40 cartes, parcours militaire 14-18</span>
+            </div>
+            <div class="tree-person">
+              <span class="tree-name">Suzanne Décré</span>
+              <span class="tree-dates"> — ~1895</span>
+              <span class="tree-role"> — nièce d'Eulalie</span>
+            </div>
+            <div class="tree-person">
+              <span class="tree-name">Marguerite Décré</span>
+              <span class="tree-dates"> — ~1897</span>
+              <span class="tree-role"> — nièce d'Eulalie</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PERSONNAGES -->
+<section id="personnages">
+  <div class="container">
+    <h2>Les personnages principaux</h2>
+    <p>Ces six correspondants représentent à eux seuls plus de la moitié des cartes identifiées de la collection.</p>
+
+    <div class="person-grid">
+
+      <div class="person-card">
+        <div class="name">Eulalie Lemonnier-Décré</div>
+        <div class="meta">1867-1938 (†70 ans) · 13 rue Clouard, Ernée · <span class="badge">Destinataire</span></div>
+        <div class="bio">Née à Laval, mariée à Michel Lemonnier (mécanicien), veuve dès 1910 à 42 ans. Elle élève seule ses deux enfants, Yvonne (17 ans) et Guy (7 ans), dans cette petite ville de Mayenne. Centre du réseau familial, elle reçoit des nouvelles de sa sœur Marie, de son neveu Georges au front, de son fils à l'école d'ingénieurs. Ses propres cartes, signées « m.l.d. », révèlent une femme cultivée et attentionnée.</div>
+      </div>
+
+      <div class="person-card">
+        <div class="name">Guy Lemonnier</div>
+        <div class="meta">1903-1979 (†75 ans) · Ernée → Angers → Tunisie → Caen · <span class="badge">38 cartes</span></div>
+        <div class="bio">Fils d'Eulalie, il entre à l'ENSAM d'Angers à 20 ans (1923-1927), fait son service au 4e Zouaves en Tunisie vers 22-24 ans, puis s'installe comme ingénieur à Caen. Ses cartes à sa « chère Maman » racontent la vie d'un jeune homme studieux, affectueux et aventureux. Il épouse Augusta Boulay de Craon en 1931, à 28 ans — leur fille Anne Marie transmettra la collection.</div>
+      </div>
+
+      <div class="person-card">
+        <div class="name">Georges Décré</div>
+        <div class="meta">~1893-? · Ingénieur S.M.I.E. · <span class="badge">40 cartes</span></div>
+        <div class="bio">Neveu d'Eulalie, fils de Marie. Mobilisé à environ 22 ans en 1915, il embarque sur le <em>Burdigala</em> pour les Dardanelles, combat à Salonique, est hospitalisé à Toulon pour paludisme à 24 ans. Après la guerre, il cherche un emploi d'ingénieur dans les revues industrielles. Sa carte du 12 novembre 1918 (à 25 ans), le lendemain de l'Armistice, est l'un des joyaux de la collection. Il annonce son mariage en 1923 (à ~30 ans) depuis Paris.</div>
+      </div>
+
+      <div class="person-card">
+        <div class="name">Marie Décré</div>
+        <div class="meta">~1865-? · Châteaubriant, Cossé-le-Vivien · <span class="badge">34 cartes</span></div>
+        <div class="bio">Sœur cadette (ou aînée ?) d'Eulalie. Ses cartes signées « Ta sœur qui t'aime, Marie » racontent le quotidien d'une mère de quatre enfants entre Châteaubriant et Cossé. Elle parle de ses « enfants à St Nazaire », de visites médicales, de la vie de ses fils au front. Un lien sororal fort qui traverse trente ans de correspondance.</div>
+      </div>
+
+      <div class="person-card">
+        <div class="name">Marguerite Lemonnier (mère)</div>
+        <div class="meta">Mère d'Eulalie et de Guy · <span class="badge">8 cartes</span></div>
+        <div class="bio">Mère de famille, elle signe « M. Le D. » (Madame Lemonnier-Décré). Ses cartes, plus rares, témoignent d'une présence maternelle bienveillante. Elle écrit à ses enfants et petits-enfants avec la même tendresse qu'Eulalie témoigne à Guy.</div>
+      </div>
+
+      <div class="person-card">
+        <div class="name">Yvonne Lemonnier</div>
+        <div class="meta">*1893, Ernée (10 ans de plus que Guy) · <span class="badge">4 cartes</span></div>
+        <div class="bio">Fille aînée d'Eulalie et Michel, née dix ans avant Guy. Elle a 17 ans au décès de son père en 1910. Ses rares cartes dans la collection suggèrent une vie plus éloignée du foyer familial d'Ernée. Elle s'installe probablement à Toulon.</div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CHRONOLOGIE -->
+<section id="chronologie">
+  <div class="container">
+    <h2>Chronologie familiale</h2>
+
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-year">1867</div>
+        <div class="tl-text">Naissance d'Eulalie Zoé Marguerite Décré à Laval</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">~1890</div>
+        <div class="tl-text">Mariage d'Eulalie avec Michel Jean Baptiste Lemonnier, mécanicien à Ernée</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1893</div>
+        <div class="tl-text">Naissance d'Yvonne Michelle Eulalie Lemonnier à Ernée</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">~1900</div>
+        <div class="tl-text">Premières cartes postales de la collection — la Belle Époque</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1903</div>
+        <div class="tl-text">Naissance de Guy Michel Albert Lemonnier à Ernée (27 août)</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1910</div>
+        <div class="tl-text">Décès de Michel Lemonnier au 13 rue Clouard, à 48 ans — Eulalie devient veuve à 42 ans, Yvonne a 17 ans, Guy n'a que 7 ans</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1914-1918</div>
+        <div class="tl-text">Grande Guerre — Georges Décré mobilisé à ~22 ans : Dardanelles, Salonique, Nancy, Toulon (paludisme). Guy est un enfant de 11-15 ans à Ernée</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">12 nov. 1918</div>
+        <div class="tl-text">Georges écrit depuis Cossé : « J'ai eu le bonheur d'arriver en permission en même temps que l'annonce de la signature de l'armistice »</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1923</div>
+        <div class="tl-text">Guy entre à l'ENSAM d'Angers à 20 ans — Georges (~30 ans) annonce son mariage depuis Paris</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">~1925-1927</div>
+        <div class="tl-text">Guy (22-24 ans) fait son service militaire au 4e Zouaves en Tunisie — « ton Zouave, Lemonnier »</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1929</div>
+        <div class="tl-text">Guy (26 ans) s'installe comme ingénieur à Caen (aciéries)</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">9 nov. 1931</div>
+        <div class="tl-text">Mariage de Guy (28 ans) avec Augusta Boulay (24 ans) à Craon (Mayenne)</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">~1935</div>
+        <div class="tl-text">Dernières cartes de la collection</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">20 fév. 1938</div>
+        <div class="tl-text">Décès d'Eulalie à Laval, à 70 ans. Guy a 34 ans, marié depuis 7 ans</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXTRAITS -->
+<section id="extraits">
+  <div class="container">
+    <h2>Extraits de correspondance</h2>
+    <p>Quelques cartes qui font revivre les voix de cette famille.</p>
+
+    <div class="card-sample">
+      <div class="card-header">
+        <span class="card-num">Carte n° 186</span>
+        <span class="card-sender">Georges Décré</span>
+        <span class="card-context">Cossé-le-Vivien, 12 novembre 1918</span>
+      </div>
+      <blockquote>Chère Tante, j'ai eu le bonheur d'arriver en permission en même temps que l'annonce de la signature de l'armistice. Nous t'envoyons tous ici nos meilleurs baisers en cet heureux jour, ainsi qu'à Guy. Cordial souvenir de ton filleul. — Décré</blockquote>
+    </div>
+
+    <div class="card-sample">
+      <div class="card-header">
+        <span class="card-num">Carte n° 455</span>
+        <span class="card-sender">Marie Décré</span>
+        <span class="card-context">Les Fougères, Saint-Nazaire</span>
+      </div>
+      <blockquote>Ma chérie, les enfants sont à St Nazaire ; ils t'écriront probablement demain mais je t'envoie quelques lignes de la plage pour te faire patienter. Didich a eu encore quelques misères causées par un fragment d'os qui est remonté sur la gencive…</blockquote>
+    </div>
+
+    <div class="card-sample">
+      <div class="card-header">
+        <span class="card-num">Carte n° 408</span>
+        <span class="card-sender">Guy Lemonnier</span>
+        <span class="card-context">Tunisie, 4e Zouaves</span>
+      </div>
+      <blockquote>J'envoie en même temps avec les lettres une superbe mine romaine située quelque part en Tunisie…</blockquote>
+    </div>
+
+  </div>
+</section>
+
+<!-- LIEUX -->
+<section id="lieux">
+  <div class="container">
+    <h2>Géographie de la collection</h2>
+    <p>Les cartes dessinent un réseau de lieux qui raconte les déplacements, les vacances, les affectations militaires et les vies professionnelles de toute une famille.</p>
+
+    <h3>Le foyer</h3>
+    <div class="places-grid">
+      <div class="place-tag"><div class="place-name">Ernée (Mayenne)</div><div class="place-detail">13 rue Clouard — domicile d'Eulalie</div></div>
+      <div class="place-tag"><div class="place-name">Laval (Mayenne)</div><div class="place-detail">Naissance et décès d'Eulalie</div></div>
+      <div class="place-tag"><div class="place-name">Cossé-le-Vivien</div><div class="place-detail">Résidence de Marie Décré</div></div>
+      <div class="place-tag"><div class="place-name">Châteaubriant (L-I)</div><div class="place-detail">Autre résidence de Marie</div></div>
+    </div>
+
+    <h3>Études et carrière de Guy</h3>
+    <div class="places-grid">
+      <div class="place-tag"><div class="place-name">Angers (ENSAM)</div><div class="place-detail">1923-1927 — École d'ingénieurs</div></div>
+      <div class="place-tag"><div class="place-name">Tunisie (Bizerte)</div><div class="place-detail">~1925-27 — 4e Zouaves</div></div>
+      <div class="place-tag"><div class="place-name">Vierzon</div><div class="place-detail">~1927-28 — premier emploi</div></div>
+      <div class="place-tag"><div class="place-name">Caen</div><div class="place-detail">~1929-32 — aciéries</div></div>
+      <div class="place-tag"><div class="place-name">Craon (Mayenne)</div><div class="place-detail">1931 — mariage avec Augusta Boulay</div></div>
+    </div>
+
+    <h3>Parcours militaire de Georges (1915-1919)</h3>
+    <div class="places-grid">
+      <div class="place-tag"><div class="place-name">Dardanelles</div><div class="place-detail">1915 — embarqué sur le <em>Burdigala</em></div></div>
+      <div class="place-tag"><div class="place-name">Salonique</div><div class="place-detail">1916 — Front d'Orient</div></div>
+      <div class="place-tag"><div class="place-name">Toulon</div><div class="place-detail">1917 — hospitalisé (paludisme)</div></div>
+      <div class="place-tag"><div class="place-name">Nersac (Charente)</div><div class="place-detail">1917-18 — 8e Génie</div></div>
+      <div class="place-tag"><div class="place-name">Metz / Kassel</div><div class="place-detail">1919 — occupation d'Allemagne</div></div>
+    </div>
+
+    <h3>Villégiatures et voyages</h3>
+    <div class="places-grid">
+      <div class="place-tag"><div class="place-name">Pornichet / La Baule</div><div class="place-detail">Villégiature balnéaire familiale</div></div>
+      <div class="place-tag"><div class="place-name">Paramé / Saint-Malo</div><div class="place-detail">Colonies de vacances des enfants</div></div>
+      <div class="place-tag"><div class="place-name">Lourdes</div><div class="place-detail">Pèlerinages</div></div>
+      <div class="place-tag"><div class="place-name">Vichy</div><div class="place-detail">Cures thermales</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CATALOGUE -->
+<section id="catalogue">
+  <div class="container">
+    <h2>Catalogue des cartes</h2>
+    <p>Parcourez les 461 cartes de la collection. Cliquez sur une carte pour voir l'image et la transcription complète.</p>
+
+    <!-- FILTRES -->
+    <div class="catalog-filters">
+      <input type="text" id="search-input" placeholder="Rechercher (expéditeur, texte, lieu...)" />
+      <select id="sender-filter">
+        <option value="">Tous les expéditeurs</option>
+      </select>
+      <div class="filter-stats" id="filter-stats"></div>
+    </div>
+
+    <!-- GRILLE DES CARTES -->
+    <div class="catalog-grid" id="catalog-grid"></div>
+
+    <!-- PAGINATION -->
+    <div class="catalog-pagination" id="catalog-pagination"></div>
+  </div>
+</section>
+
+<!-- LIGHTBOX VISIONNEUSE -->
+<div class="lightbox" id="lightbox">
+  <div class="lightbox-backdrop" onclick="closeLightbox()"></div>
+  <div class="lightbox-content">
+    <button class="lightbox-close" onclick="closeLightbox()">&times;</button>
+    <div class="lightbox-nav">
+      <button class="lb-prev" onclick="navCard(-1)">&larr;</button>
+      <button class="lb-next" onclick="navCard(1)">&rarr;</button>
+    </div>
+    <div class="lightbox-header" id="lb-header"></div>
+    <div class="lightbox-body">
+      <div class="lightbox-images">
+        <div class="lb-img-tabs">
+          <button class="lb-tab active" onclick="showTab('verso', this)">Verso (message)</button>
+          <button class="lb-tab" onclick="showTab('recto', this)">Recto (image)</button>
+        </div>
+        <div class="lb-img-container" id="lb-img-container">
+          <img id="lb-image" src="" alt="Carte postale" />
+          <div class="lb-img-zoom-hint">Cliquez pour zoomer</div>
+        </div>
+      </div>
+      <div class="lightbox-text">
+        <div class="lb-section">
+          <div class="lb-label">Expéditeur</div>
+          <div class="lb-value" id="lb-sender"></div>
+        </div>
+        <div class="lb-section">
+          <div class="lb-label">Destinataire</div>
+          <div class="lb-value" id="lb-dest"></div>
+        </div>
+        <div class="lb-section" id="lb-date-section">
+          <div class="lb-label">Date</div>
+          <div class="lb-value" id="lb-date"></div>
+        </div>
+        <div class="lb-section">
+          <div class="lb-label">Transcription</div>
+          <div class="lb-transcription" id="lb-trans"></div>
+        </div>
+        <div class="lb-section" id="lb-notes-section">
+          <div class="lb-label">Notes</div>
+          <div class="lb-value lb-notes" id="lb-notes"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <p>Collection Lemonnier-Décré — 461 cartes postales familiales (1900-1935)</p>
+  <p>Numérisées et transcrites par Krishna Naudin · Analyse assistée par IA (Claude & Gemini)</p>
+  <p style="margin-top: 0.5rem; opacity: 0.6;">Dernière mise à jour : mars 2026</p>
+</footer>
+
+<script src="cards_data.js"></script>
+<script>
+// ===== CATALOGUE =====
+const ITEMS_PER_PAGE = 40;
+let currentPage = 1;
+let filteredCards = [...CARDS_DATA];
+let currentLbIndex = -1;
+let currentSide = 'verso';
+
+function padNum(n) { return String(n).padStart(3, '0'); }
+function imgPath(n, side) { return `lemonnier_${padNum(n)}_${side}.jpg`; }
+
+// Build sender filter
+const senderCounts = {};
+CARDS_DATA.forEach(c => {
+  let s = c.exp || '(sans expéditeur)';
+  // Simplify for grouping
+  if (s.includes('Guy Lemonnier')) s = 'Guy Lemonnier';
+  else if (s.includes('Marie Décré')) s = 'Marie Décré (sœur d\'Eulalie)';
+  else if (s.includes('G. Décré')) s = 'Georges Décré';
+  else if (s.includes('Eulalie')) s = 'Eulalie Lemonnier';
+  else if (s.includes('Marguerite Lemonnier')) s = 'Marguerite Lemonnier (mère)';
+  else if (s.includes('Yvonne Lemonnier')) s = 'Yvonne Lemonnier';
+  else if (s.includes('Charlotte')) s = 'Charlotte';
+  else if (s.includes('Inconnu') || s.includes('Non identifié') || s.includes('inconnu')) s = '(non identifié)';
+  senderCounts[s] = (senderCounts[s] || 0) + 1;
+});
+const sel = document.getElementById('sender-filter');
+Object.entries(senderCounts)
+  .sort((a,b) => b[1] - a[1])
+  .forEach(([name, count]) => {
+    const opt = document.createElement('option');
+    opt.value = name;
+    opt.textContent = `${name} (${count})`;
+    sel.appendChild(opt);
+  });
+
+const MONTHS_FR = {janvier:0,fevrier:1,mars:2,avril:3,mai:4,juin:5,juillet:6,aout:7,septembre:8,sept:8,octobre:9,novembre:10,decembre:11,'7bre':8,'8bre':9,'9bre':10,'xbre':11};
+function parseCardDate(s) {
+  if (!s || !s.trim()) return null;
+  const low = s.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'').replace(/1er/g, '1').replace(/[.,]/g, ' ').trim();
+  let m;
+  // Parenthesized clarification: "1/8/11 (1er août 1911)" → use the part in parens
+  const paren = low.match(/\(([^)]+)\)/);
+  if (paren) { const r = parseCardDate(paren[1]); if (r) return r; }
+  // "14 sept 1923" or "14 7bre 23" style after = sign
+  const eq = low.split('=');
+  if (eq.length > 1) { const r = parseCardDate(eq[eq.length-1]); if (r) return r; }
+  // Range like [1925-1926] → take first year
+  m = low.match(/\[(\d{4})/);
+  if (m) return Date.UTC(+m[1], 0, 1);
+  // Full date: 19 juillet 1911 / 13 aout 1905
+  m = low.match(/(\d{1,2})\s+([a-z7-9x]+)\s+(\d{4})/);
+  if (m && MONTHS_FR[m[2]] !== undefined) return Date.UTC(+m[3], MONTHS_FR[m[2]], +m[1]);
+  // Short year: "14 7bre 23" → 1923
+  m = low.match(/(\d{1,2})\s+([a-z7-9x]+)\s+(\d{2})(?:\s|$)/);
+  if (m && MONTHS_FR[m[2]] !== undefined) { const y = +m[3] + 1900; return Date.UTC(y, MONTHS_FR[m[2]], +m[1]); }
+  // DD/MM/YY or DD-MM-YY: 16/9/31 → 1931-09-16, 21-8-27 → 1927-08-21
+  m = low.match(/(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{2,4})/);
+  if (m) { let y = +m[3]; if (y < 100) y += 1900; return Date.UTC(y, +m[2]-1, +m[1]); }
+  // Month + year: juillet 1911
+  m = low.match(/([a-zéûà7-9x]+)\s+(\d{4})/);
+  if (m && MONTHS_FR[m[1]] !== undefined) return Date.UTC(+m[2], MONTHS_FR[m[1]], 1);
+  // Year only: 1911
+  m = low.match(/(\d{4})/);
+  if (m) return Date.UTC(+m[1], 0, 1);
+  return null;
+}
+
+function applyFilters() {
+  const query = document.getElementById('search-input').value.toLowerCase().trim();
+  const sender = document.getElementById('sender-filter').value;
+
+  filteredCards = CARDS_DATA.filter(c => {
+    // Sender filter
+    if (sender) {
+      let s = c.exp || '(sans expéditeur)';
+      if (s.includes('Guy Lemonnier')) s = 'Guy Lemonnier';
+      else if (s.includes('Marie Décré')) s = 'Marie Décré (sœur d\'Eulalie)';
+      else if (s.includes('G. Décré')) s = 'Georges Décré';
+      else if (s.includes('Eulalie')) s = 'Eulalie Lemonnier';
+      else if (s.includes('Marguerite Lemonnier')) s = 'Marguerite Lemonnier (mère)';
+      else if (s.includes('Yvonne Lemonnier')) s = 'Yvonne Lemonnier';
+      else if (s.includes('Charlotte')) s = 'Charlotte';
+      else if (s.includes('Inconnu') || s.includes('Non identifié') || s.includes('inconnu')) s = '(non identifié)';
+      if (s !== sender) return false;
+    }
+    // Text search
+    if (query) {
+      const haystack = `${c.exp} ${c.dest} ${c.trans} ${c.notes} ${c.date} carte ${c.n}`.toLowerCase();
+      return haystack.includes(query);
+    }
+    return true;
+  });
+
+  // Sort by date (undated cards at the end)
+  filteredCards.sort((a, b) => {
+    const da = parseCardDate(a.date);
+    const db = parseCardDate(b.date);
+    if (da === null && db === null) return a.n - b.n;
+    if (da === null) return 1;
+    if (db === null) return -1;
+    return da - db || a.n - b.n;
+  });
+
+  currentPage = 1;
+  renderCatalog();
+}
+
+function renderCatalog() {
+  const grid = document.getElementById('catalog-grid');
+  const stats = document.getElementById('filter-stats');
+  const pag = document.getElementById('catalog-pagination');
+
+  const total = filteredCards.length;
+  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
+  const start = (currentPage - 1) * ITEMS_PER_PAGE;
+  const pageCards = filteredCards.slice(start, start + ITEMS_PER_PAGE);
+
+  stats.textContent = `${total} carte${total > 1 ? 's' : ''} trouvée${total > 1 ? 's' : ''}`;
+
+  grid.innerHTML = pageCards.map((c, i) => {
+    const sender = c.exp || '<em>non renseigné</em>';
+    const preview = c.trans ? c.trans.substring(0, 80) + (c.trans.length > 80 ? '…' : '') : '<em>pas de transcription</em>';
+    return `<div class="cat-card" onclick="openLightbox(${start + i})">
+      <div class="cat-thumb">
+        <img src="${imgPath(c.n, 'verso')}" alt="Carte ${c.n}" loading="lazy" onerror="this.style.display='none'" />
+        <span class="cat-num">#${c.n}</span>
+      </div>
+      <div class="cat-info">
+        <div class="cat-sender">${sender}</div>
+        ${c.date ? `<div class="cat-date">${c.date}</div>` : ''}
+        <div class="cat-preview">${preview}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Pagination
+  if (totalPages > 1) {
+    let html = '';
+    if (currentPage > 1) html += `<button onclick="goPage(${currentPage-1})">&larr; Préc.</button>`;
+
+    // Show page numbers
+    for (let p = 1; p <= totalPages; p++) {
+      if (p === 1 || p === totalPages || (p >= currentPage - 2 && p <= currentPage + 2)) {
+        html += `<button class="${p === currentPage ? 'active' : ''}" onclick="goPage(${p})">${p}</button>`;
+      } else if (p === currentPage - 3 || p === currentPage + 3) {
+        html += `<span class="pag-dots">…</span>`;
+      }
+    }
+
+    if (currentPage < totalPages) html += `<button onclick="goPage(${currentPage+1})">Suiv. &rarr;</button>`;
+    pag.innerHTML = html;
+  } else {
+    pag.innerHTML = '';
+  }
+}
+
+function goPage(p) {
+  currentPage = p;
+  renderCatalog();
+  document.getElementById('catalogue').scrollIntoView({behavior: 'smooth'});
+}
+
+// ===== LIGHTBOX =====
+function openLightbox(index) {
+  currentLbIndex = index;
+  currentSide = 'verso';
+  const c = filteredCards[index];
+
+  document.getElementById('lb-header').innerHTML = `<span class="lb-card-num">Carte n° ${c.n}</span>`;
+  document.getElementById('lb-sender').textContent = c.exp || '(non renseigné)';
+  document.getElementById('lb-dest').textContent = c.dest || '(non renseigné)';
+  document.getElementById('lb-date').textContent = c.date || '(non datée)';
+  document.getElementById('lb-date-section').style.display = c.date ? '' : 'none';
+  document.getElementById('lb-trans').innerHTML = c.trans ? c.trans.replace(/\n/g, '<br>') : '<em>Pas de transcription disponible</em>';
+  document.getElementById('lb-notes').textContent = c.notes || '';
+  document.getElementById('lb-notes-section').style.display = c.notes ? '' : 'none';
+
+  const img = document.getElementById('lb-image');
+  img.src = imgPath(c.n, 'verso');
+  img.classList.remove('zoomed');
+
+  // Reset tabs
+  document.querySelectorAll('.lb-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
+
+  document.getElementById('lightbox').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function navCard(dir) {
+  const newIdx = currentLbIndex + dir;
+  if (newIdx >= 0 && newIdx < filteredCards.length) {
+    openLightbox(newIdx);
+  }
+}
+
+function showTab(side, btn) {
+  currentSide = side;
+  const c = filteredCards[currentLbIndex];
+  document.getElementById('lb-image').src = imgPath(c.n, side);
+  document.getElementById('lb-image').classList.remove('zoomed');
+  document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+// Zoom on image click
+document.getElementById('lb-image').addEventListener('click', function() {
+  this.classList.toggle('zoomed');
+});
+
+// Keyboard nav
+document.addEventListener('keydown', e => {
+  if (!document.getElementById('lightbox').classList.contains('open')) return;
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') navCard(-1);
+  if (e.key === 'ArrowRight') navCard(1);
+});
+
+// Event listeners
+document.getElementById('search-input').addEventListener('input', debounce(applyFilters, 300));
+document.getElementById('sender-filter').addEventListener('change', applyFilters);
+
+function debounce(fn, ms) {
+  let t;
+  return function(...args) { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+// Init
+applyFilters();
+</script>
+
+</body>
+</html>
