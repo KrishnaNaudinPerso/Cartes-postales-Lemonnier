@@ -625,6 +625,7 @@
   <a href="#extraits">Extraits</a>
   <a href="#lieux">Lieux</a>
   <a href="#catalogue">Catalogue</a>
+  <a href="#commentaires">Commentaires</a>
 </nav>
 
 <!-- INTRODUCTION -->
@@ -1212,6 +1213,69 @@ function debounce(fn, ms) {
 // Init
 applyFilters();
 </script>
+
+<!-- ========== SECTION COMMENTAIRES ========== -->
+<section id="commentaires" style="max-width:700px; margin:3rem auto; padding:2rem; background:#faf8f5; border-radius:12px; border:1px solid #ddd; font-family:inherit;">
+
+  <h2 style="color:#5a3e2b; margin-bottom:0.5rem;">💬 Laisser un commentaire</h2>
+  <p style="color:#666; margin-bottom:1.5rem; font-size:0.95rem;">
+    Une remarque sur la généalogie, un lieu, une date, un personnage que vous reconnaissez ?
+    Toutes les contributions sont bienvenues.
+  </p>
+
+  <form action="https://formspree.io/f/mkopjpbv" method="POST">
+
+    <div style="margin-bottom:1rem;">
+      <label style="display:block; font-weight:600; margin-bottom:0.3rem;">Votre nom</label>
+      <input type="text" name="nom" required
+        style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:6px; font-size:1rem; box-sizing:border-box;">
+    </div>
+
+    <div style="margin-bottom:1rem;">
+      <label style="display:block; font-weight:600; margin-bottom:0.3rem;">Votre email (pour que je puisse vous répondre)</label>
+      <input type="email" name="_replyto" required
+        style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:6px; font-size:1rem; box-sizing:border-box;">
+    </div>
+
+    <div style="margin-bottom:1rem;">
+      <label style="display:block; font-weight:600; margin-bottom:0.3rem;">Sujet du commentaire</label>
+      <select name="sujet" style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:6px; font-size:1rem; box-sizing:border-box;">
+        <option value="">-- Choisir --</option>
+        <option value="genealogie">Généalogie / lien de parenté</option>
+        <option value="personnage">Identification d'un personnage</option>
+        <option value="lieu">Lieu / localisation</option>
+        <option value="date">Date / période</option>
+        <option value="transcription">Correction de transcription</option>
+        <option value="autre">Autre</option>
+      </select>
+    </div>
+
+    <div style="margin-bottom:1rem;">
+      <label style="display:block; font-weight:600; margin-bottom:0.3rem;">Numéro de carte (si applicable)</label>
+      <input type="text" name="carte" placeholder="ex: carte 42, ou laisser vide"
+        style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:6px; font-size:1rem; box-sizing:border-box;">
+    </div>
+
+    <div style="margin-bottom:1.5rem;">
+      <label style="display:block; font-weight:600; margin-bottom:0.3rem;">Votre commentaire</label>
+      <textarea name="message" rows="5" required
+        style="width:100%; padding:0.6rem; border:1px solid #ccc; border-radius:6px; font-size:1rem; box-sizing:border-box; resize:vertical;"
+        placeholder="Décrivez votre remarque, correction ou information..."></textarea>
+    </div>
+
+    <!-- Honeypot anti-spam -->
+    <input type="text" name="_gotcha" style="display:none;">
+    <input type="hidden" name="_subject" value="Nouveau commentaire — Cartes Boulay">
+    <input type="hidden" name="_replyto" value="genealogie.krishna@proton.me">
+
+    <button type="submit"
+      style="background:#5a3e2b; color:white; padding:0.7rem 2rem; border:none; border-radius:8px; font-size:1rem; cursor:pointer;">
+      Envoyer
+    </button>
+
+  </form>
+
+</section>
 
 </body>
 </html>
