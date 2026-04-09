@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carte — Collection Lemonnier-Decré</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&display=swap');
+
+  :root {
+    --sepia: #f5f0e8;
+    --sepia-dark: #e8dfd0;
+    --ink: #2c2417;
+    --ink-light: #5a4d3a;
+    --accent: #8b4513;
+    --accent-light: #c4956a;
+    --blue-link: #4a6fa5;
+    --card-bg: #fffdf7;
+    --shadow: rgba(44, 36, 23, 0.12);
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Sans 3', 'Georgia', serif;
+    background: var(--sepia);
+    color: var(--ink);
+    line-height: 1.7;
+  }
+
+  /* === HERO === */
+  .hero {
+    background: linear-gradient(135deg, #3d2b1f 0%, #5c3d2e 50%, #2c2417 100%);
+    color: var(--sepia);
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(1.8rem, 4vw, 2.8rem);
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    position: relative;
+  }
+  .hero .subtitle {
+    font-family: 'Source Serif 4', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    opacity: 0.85;
+    position: relative;
+  }
+
+  /* === NAV === */
+  nav {
+    background: #2c2417;
+    padding: 0.8rem 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  nav a {
+    color: var(--sepia-dark);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    transition: color 0.3s;
+  }
+  nav a:hover, nav a.active { color: var(--accent-light); }
+
+  /* === MAP === */
+  #map-section {
+    padding: 2rem 0 0;
+  }
+  #map {
+    width: 100%;
+    height: 70vh;
+    min-height: 450px;
+    border-top: 3px solid var(--accent);
+    border-bottom: 3px solid var(--accent);
+  }
+
+  /* Leaflet popup style override */
+  .leaflet-popup-content-wrapper {
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    font-family: 'Source Sans 3', sans-serif;
+  }
+  .leaflet-popup-content {
+    margin: 12px 16px;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .popup-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 6px;
+    border-bottom: 1px solid var(--sepia-dark);
+    padding-bottom: 4px;
+  }
+  .popup-count {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    margin-bottom: 8px;
+  }
+  .popup-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    max-height: 120px;
+    overflow-y: auto;
+  }
+  .popup-cards a {
+    display: inline-block;
+    background: var(--sepia);
+    color: var(--accent);
+    padding: 2px 8px;
+    border-radius: 4px;
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+  }
+  .popup-cards a:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* === STATS === */
+  .stats-section {
+    max-width: 1000px;
+    margin: 2.5rem auto;
+    padding: 0 2rem;
+  }
+  .stats-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2.5rem;
+  }
+  .stat-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: 0 2px 12px var(--shadow);
+    border: 1px solid var(--sepia-dark);
+  }
+  .stat-card .num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--accent);
+    display: block;
+  }
+  .stat-card .label {
+    font-size: 0.9rem;
+    color: var(--ink-light);
+    margin-top: 0.3rem;
+  }
+
+  /* === PLACES GRID === */
+  .places-section {
+    max-width: 1200px;
+    margin: 0 auto 3rem;
+    padding: 0 2rem;
+  }
+  .places-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .places-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 1rem;
+  }
+  .place-card {
+    background: var(--card-bg);
+    border-radius: 10px;
+    padding: 1rem 1.2rem;
+    box-shadow: 0 2px 8px var(--shadow);
+    border: 1px solid var(--sepia-dark);
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  .place-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px var(--shadow);
+  }
+  .place-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+  .place-count {
+    font-size: 0.85rem;
+    color: var(--ink-light);
+    margin-top: 0.2rem;
+  }
+  .place-cards {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-top: 0.5rem;
+  }
+  .place-cards a {
+    display: inline-block;
+    background: var(--sepia);
+    color: var(--accent);
+    padding: 1px 7px;
+    border-radius: 3px;
+    text-decoration: none;
+    font-size: 0.78rem;
+    font-weight: 600;
+    transition: background 0.2s, color 0.2s;
+  }
+  .place-cards a:hover {
+    background: var(--accent);
+    color: white;
+  }
+
+  /* === REGIONS === */
+  .regions-section {
+    max-width: 1000px;
+    margin: 0 auto 3rem;
+    padding: 0 2rem;
+  }
+  .regions-section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--accent);
+    margin-bottom: 1.5rem;
+    text-align: center;
+  }
+  .region-bar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.6rem;
+  }
+  .region-label {
+    width: 180px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    text-align: right;
+    padding-right: 1rem;
+    color: var(--ink-light);
+    flex-shrink: 0;
+  }
+  .region-fill {
+    height: 24px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-light));
+    border-radius: 4px;
+    transition: width 0.6s ease;
+    min-width: 2px;
+  }
+  .region-count {
+    margin-left: 0.5rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  /* === FOOTER === */
+  footer {
+    background: #2c2417;
+    color: var(--sepia-dark);
+    text-align: center;
+    padding: 2rem;
+    font-size: 0.85rem;
+  }
+  footer a { color: var(--accent-light); text-decoration: none; }
+  footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 768px) {
+    nav { gap: 0.8rem; padding: 0.6rem 1rem; }
+    nav a { font-size: 0.75rem; }
+    #map { height: 55vh; min-height: 350px; }
+    .region-label { width: 120px; font-size: 0.8rem; }
+    .places-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <h1>Carte des lieux</h1>
+  <p class="subtitle">Collection Lemonnier-Decré — 461 cartes postales, 1900–1935</p>
+</div>
+
+<nav>
+  <a href="index.html">Accueil</a>
+  <a href="index.html#arbre">Arbre</a>
+  <a href="index.html#personnages">Personnages</a>
+  <a href="index.html#chronologie">Chronologie</a>
+  <a href="index.html#catalogue">Catalogue</a>
+  <a href="carte.html" class="active">Carte</a>
+</nav>
+
+<section id="map-section">
+  <div id="map"></div>
+</section>
+
+<section class="stats-section">
+  <h2>La collection en chiffres</h2>
+  <div class="stats-grid">
+    <div class="stat-card">
+      <span class="num" id="stat-places">0</span>
+      <span class="label">Lieux identifiés</span>
+    </div>
+    <div class="stat-card">
+      <span class="num" id="stat-cards">0</span>
+      <span class="label">Cartes géolocalisées</span>
+    </div>
+    <div class="stat-card">
+      <span class="num">461</span>
+      <span class="label">Cartes dans la collection</span>
+    </div>
+    <div class="stat-card">
+      <span class="num" id="stat-pays">0</span>
+      <span class="label">Pays</span>
+    </div>
+  </div>
+</section>
+
+<section class="regions-section">
+  <h2>Répartition par région</h2>
+  <div id="regions-chart"></div>
+</section>
+
+<section class="places-section">
+  <h2>Tous les lieux</h2>
+  <div class="places-grid" id="places-grid"></div>
+</section>
+
+<footer>
+  <p>Collection Lemonnier-Decré — <a href="index.html">Retour à l'accueil</a></p>
+  <p style="margin-top:0.5rem; opacity:0.6;">Carte interactive basée sur les 461 cartes postales (1900-1935)</p>
+</footer>
+
+<script>
+// === PLACES DATA ===
+const PLACES_DATA = [
+  {name: "Angers", lat: 47.4784, lon: -0.5632, cards: [346,347,348,349,354,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,370,371,372,373,374,375], region: "Pays de la Loire"},
+  {name: "Paris", lat: 48.8566, lon: 2.3522, cards: [6,49,52,110,301,303,320,340,342,343,344,352,377,396,397], region: "Île-de-France"},
+  {name: "Ernée", lat: 48.2969, lon: -0.9336, cards: [50,54,55,56,57,58,59,60,86,312,317,330,387,389], region: "Pays de la Loire"},
+  {name: "Mayenne", lat: 48.3028, lon: -0.6147, cards: [21,27,28,45,124,324,326,329,392,393,394,399], region: "Pays de la Loire"},
+  {name: "Saint-Cast", lat: 48.6281, lon: -2.2567, cards: [9,10,11,12,13,14,15,29,30,353], region: "Bretagne"},
+  {name: "Tunis", lat: 36.8065, lon: 10.1815, cards: [405,408,409,418,419,420,421,422,423], region: "Tunisie"},
+  {name: "Zaghouan", lat: 36.4025, lon: 10.1428, cards: [418,419,420,421,422,423], region: "Tunisie"},
+  {name: "Paramé", lat: 48.6614, lon: -1.9853, cards: [20,40,296,306,319], region: "Bretagne"},
+  {name: "Laval", lat: 48.0733, lon: -0.7689, cards: [309,311,327,331,388], region: "Pays de la Loire"},
+  {name: "Saint-Nazaire", lat: 47.2733, lon: -2.2136, cards: [378,379,381,386,401], region: "Pays de la Loire"},
+  {name: "Aïn-Draham", lat: 36.7833, lon: 8.6833, cards: [404,407,410,411,417], region: "Tunisie"},
+  {name: "Cossé-le-Vivien", lat: 47.9428, lon: -0.91, cards: [44,248,313,315], region: "Pays de la Loire"},
+  {name: "Guérande", lat: 47.3289, lon: -2.4289, cards: [382,383,384,385], region: "Pays de la Loire"},
+  {name: "Rennes", lat: 48.1173, lon: -1.6778, cards: [1,2,328], region: "Bretagne"},
+  {name: "Le Mans", lat: 48.0061, lon: 0.1996, cards: [5,22,43,325,402], region: "Pays de la Loire"},
+  {name: "Saint-Malo", lat: 48.6493, lon: -1.989, cards: [298], region: "Bretagne"},
+  {name: "Bordeaux", lat: 44.8378, lon: -0.5792, cards: [7,380], region: "Nouvelle-Aquitaine"},
+  {name: "Meschers-les-Bains", lat: 45.5606, lon: -0.9506, cards: [16,17,18], region: "Nouvelle-Aquitaine"},
+  {name: "Châteaubriant", lat: 47.7186, lon: -1.3761, cards: [23,345], region: "Pays de la Loire"},
+  {name: "Tours", lat: 47.3941, lon: 0.6848, cards: [24,53], region: "Centre-Val de Loire"},
+  {name: "Pornichet", lat: 47.2639, lon: -2.3378, cards: [26,41], region: "Pays de la Loire"},
+  {name: "Lourdes", lat: 43.095, lon: -0.0458, cards: [35,297], region: "Occitanie"},
+  {name: "Argences", lat: 49.1319, lon: -0.1597, cards: [46,51], region: "Normandie"},
+  {name: "Piriac-sur-Mer", lat: 47.38, lon: -2.5467, cards: [90,92], region: "Pays de la Loire"},
+  {name: "Monaco", lat: 43.7384, lon: 7.4246, cards: [98,99], region: "Étranger"},
+  {name: "Marseille", lat: 43.2965, lon: 5.3698, cards: [170,416], region: "Provence-Alpes-Côte d'Azur"},
+  {name: "Versailles", lat: 48.8048, lon: 2.1203, cards: [300,310], region: "Île-de-France"},
+  {name: "Caen", lat: 49.1829, lon: -0.3707, cards: [305,332], region: "Normandie"},
+  {name: "Vichy", lat: 46.1167, lon: 3.4167, cards: [308,323], region: "Auvergne-Rhône-Alpes"},
+  {name: "Saint-Lô", lat: 49.1167, lon: -1.0833, cards: [314,316], region: "Normandie"},
+  {name: "Sablé-sur-Sarthe", lat: 47.8389, lon: -0.3331, cards: [337,350], region: "Pays de la Loire"},
+  {name: "Alger", lat: 36.7538, lon: 3.0588, cards: [412,414], region: "Algérie"},
+  {name: "Tabarka", lat: 36.9544, lon: 8.7581, cards: [413,415], region: "Tunisie"},
+  {name: "Sainte-Marguerite", lat: 47.15, lon: -1.7833, cards: [3], region: "Pays de la Loire"},
+  {name: "Grindelwald", lat: 46.6242, lon: 8.0414, cards: [4], region: "Étranger"},
+  {name: "Le Guildo", lat: 48.5756, lon: -2.2089, cards: [8], region: "Bretagne"},
+  {name: "Dinan", lat: 48.4547, lon: -2.05, cards: [19], region: "Bretagne"},
+  {name: "Cesny-aux-Vignes", lat: 49.05, lon: -0.1167, cards: [25], region: "Normandie"},
+  {name: "Fort La Latte", lat: 48.67, lon: -2.3, cards: [31], region: "Bretagne"},
+  {name: "La Baule", lat: 47.2867, lon: -2.3933, cards: [34], region: "Pays de la Loire"},
+  {name: "Montmorillon", lat: 46.4261, lon: 0.8706, cards: [36], region: "Nouvelle-Aquitaine"},
+  {name: "Biarritz", lat: 43.4832, lon: -1.5586, cards: [38], region: "Nouvelle-Aquitaine"},
+  {name: "Cabourg", lat: 49.2919, lon: -0.12, cards: [39], region: "Normandie"},
+  {name: "Saint-Ouen-des-Toits", lat: 48.1333, lon: -0.8667, cards: [42], region: "Pays de la Loire"},
+  {name: "Saint-Denis-de-Gastines", lat: 48.3267, lon: -0.8803, cards: [47], region: "Pays de la Loire"},
+  {name: "Le Mont Saint-Michel", lat: 48.6361, lon: -1.5114, cards: [48], region: "Normandie"},
+  {name: "Cherbourg", lat: 49.6337, lon: -1.6222, cards: [76], region: "Normandie"},
+  {name: "Huelgoat", lat: 48.3614, lon: -3.5781, cards: [85], region: "Bretagne"},
+  {name: "Nantes", lat: 47.2184, lon: -1.5536, cards: [106], region: "Pays de la Loire"},
+  {name: "La Trinité-sur-Mer", lat: 47.5878, lon: -3.0267, cards: [160], region: "Bretagne"},
+  {name: "Versac", lat: 45.45, lon: -0.4333, cards: [180], region: "Nouvelle-Aquitaine"},
+  {name: "Garnay", lat: 48.4167, lon: 1.3833, cards: [232], region: "Centre-Val de Loire"},
+  {name: "Le Blanc", lat: 46.6331, lon: 1.0631, cards: [273], region: "Centre-Val de Loire"},
+  {name: "Vallée de l'Odet", lat: 47.95, lon: -4.1, cards: [299], region: "Bretagne"},
+  {name: "Lagny", lat: 48.8739, lon: 2.7128, cards: [302], region: "Île-de-France"},
+  {name: "Brive", lat: 45.1597, lon: 1.5336, cards: [304], region: "Nouvelle-Aquitaine"},
+  {name: "Lisbonne", lat: 38.7223, lon: -9.1393, cards: [307], region: "Étranger"},
+  {name: "Chartres", lat: 48.4436, lon: 1.49, cards: [318], region: "Centre-Val de Loire"},
+  {name: "Chalandry", lat: 49.7167, lon: 3.5833, cards: [321], region: "Hauts-de-France"},
+  {name: "St-Pierre-de-Cernières", lat: 48.9333, lon: 0.5833, cards: [322], region: "Normandie"},
+  {name: "Bruxelles", lat: 50.8503, lon: 4.3517, cards: [333], region: "Étranger"},
+  {name: "Batz", lat: 47.2817, lon: -2.4783, cards: [335], region: "Pays de la Loire"},
+  {name: "Saumur", lat: 47.26, lon: -0.0742, cards: [336], region: "Pays de la Loire"},
+  {name: "Paray-le-Monial", lat: 46.4508, lon: 4.12, cards: [341], region: "Bourgogne-Franche-Comté"},
+  {name: "Dives-sur-Mer", lat: 49.2878, lon: -0.0997, cards: [351], region: "Normandie"},
+  {name: "Villedieu-les-Poêles", lat: 48.8417, lon: -1.2194, cards: [376], region: "Normandie"},
+  {name: "Dinard", lat: 48.6308, lon: -2.07, cards: [395], region: "Bretagne"},
+  {name: "Saint-Pierre-sur-Dives", lat: 49.0167, lon: -0.0333, cards: [398], region: "Normandie"},
+  {name: "Croix-de-Vie", lat: 46.6933, lon: -1.8658, cards: [400], region: "Pays de la Loire"},
+  {name: "Grandcamp-les-Bains", lat: 49.3872, lon: -1.0419, cards: [403], region: "Normandie"},
+  {name: "Bizerte", lat: 37.2744, lon: 9.8739, cards: [406], region: "Tunisie"},
+  {name: "Vierzon", lat: 47.2219, lon: 2.07, cards: [442], region: "Centre-Val de Loire"},
+  {name: "Camp d'Auvours", lat: 47.9667, lon: 0.3333, cards: [463], region: "Pays de la Loire"},
+  {name: "Flers", lat: 48.7492, lon: -0.5731, cards: [454], region: "Normandie"},
+  {name: "Evron", lat: 48.1533, lon: -0.4017, cards: [21,28], region: "Pays de la Loire"},
+  {name: "Sainte-Suzanne", lat: 48.0981, lon: -0.35, cards: [124], region: "Pays de la Loire"},
+];
+
+// === INIT MAP ===
+const map = L.map('map', { scrollWheelZoom: true }).setView([47.0, 0.5], 6);
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  maxZoom: 18,
+}).addTo(map);
+
+// Custom sepia-toned circle marker
+function markerRadius(count) {
+  if (count >= 15) return 18;
+  if (count >= 8) return 14;
+  if (count >= 4) return 11;
+  if (count >= 2) return 8;
+  return 6;
+}
+
+function markerColor(count) {
+  if (count >= 10) return '#8b4513';
+  if (count >= 4) return '#a0622e';
+  return '#c4956a';
+}
+
+// Add markers
+const markers = [];
+PLACES_DATA.forEach(place => {
+  const r = markerRadius(place.cards.length);
+  const color = markerColor(place.cards.length);
+
+  const marker = L.circleMarker([place.lat, place.lon], {
+    radius: r,
+    fillColor: color,
+    color: '#2c2417',
+    weight: 1.5,
+    opacity: 0.9,
+    fillOpacity: 0.75,
+  }).addTo(map);
+
+  // Popup content
+  const cardsHtml = place.cards.map(n =>
+    `<a href="index.html#card-${n}" title="Carte n° ${n}">${n}</a>`
+  ).join(' ');
+
+  marker.bindPopup(`
+    <div class="popup-title">${place.name}</div>
+    <div class="popup-count">${place.cards.length} carte${place.cards.length > 1 ? 's' : ''}</div>
+    <div class="popup-cards">${cardsHtml}</div>
+  `, { maxWidth: 280 });
+
+  markers.push({ marker, place });
+});
+
+// Fit bounds to France + North Africa
+map.fitBounds([
+  [35.5, -10],
+  [51.5, 12]
+]);
+
+// === STATS ===
+const totalCards = new Set(PLACES_DATA.flatMap(p => p.cards)).size;
+const totalPlaces = PLACES_DATA.length;
+const countries = new Set();
+PLACES_DATA.forEach(p => {
+  if (p.region === 'Tunisie') countries.add('Tunisie');
+  else if (p.region === 'Algérie') countries.add('Algérie');
+  else if (p.region === 'Étranger') {
+    if (p.name === 'Lisbonne') countries.add('Portugal');
+    else if (p.name === 'Bruxelles') countries.add('Belgique');
+    else if (p.name === 'Grindelwald') countries.add('Suisse');
+    else if (p.name === 'Monaco') countries.add('Monaco');
+  }
+  else countries.add('France');
+});
+
+document.getElementById('stat-places').textContent = totalPlaces;
+document.getElementById('stat-cards').textContent = totalCards;
+document.getElementById('stat-pays').textContent = countries.size;
+
+// === REGIONS CHART ===
+const regionCounts = {};
+PLACES_DATA.forEach(p => {
+  if (!regionCounts[p.region]) regionCounts[p.region] = new Set();
+  p.cards.forEach(c => regionCounts[p.region].add(c));
+});
+
+const regionData = Object.entries(regionCounts)
+  .map(([name, cards]) => ({ name, count: cards.size }))
+  .sort((a, b) => b.count - a.count);
+
+const maxRegion = regionData[0]?.count || 1;
+const regionsContainer = document.getElementById('regions-chart');
+
+regionData.forEach(r => {
+  const pct = (r.count / maxRegion * 100).toFixed(0);
+  const bar = document.createElement('div');
+  bar.className = 'region-bar';
+  bar.innerHTML = `
+    <span class="region-label">${r.name}</span>
+    <div class="region-fill" style="width: ${pct}%"></div>
+    <span class="region-count">${r.count}</span>
+  `;
+  regionsContainer.appendChild(bar);
+});
+
+// === PLACES GRID ===
+const placesGrid = document.getElementById('places-grid');
+
+const sortedPlaces = [...PLACES_DATA].sort((a, b) => b.cards.length - a.cards.length);
+
+sortedPlaces.forEach(place => {
+  const card = document.createElement('div');
+  card.className = 'place-card';
+
+  const cardsLinks = place.cards.map(n =>
+    `<a href="index.html#card-${n}" title="Carte n° ${n}">${n}</a>`
+  ).join('');
+
+  card.innerHTML = `
+    <div class="place-name">${place.name}</div>
+    <div class="place-count">${place.cards.length} carte${place.cards.length > 1 ? 's' : ''} — ${place.region}</div>
+    <div class="place-cards">${cardsLinks}</div>
+  `;
+
+  // Click card to fly to location on map
+  card.addEventListener('click', (e) => {
+    if (e.target.tagName === 'A') return; // let links work
+    map.flyTo([place.lat, place.lon], 10, { duration: 1 });
+    const m = markers.find(m => m.place.name === place.name);
+    if (m) setTimeout(() => m.marker.openPopup(), 600);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  placesGrid.appendChild(card);
+});
+</script>
+
+</body>
+</html>
