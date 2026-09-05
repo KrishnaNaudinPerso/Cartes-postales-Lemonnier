@@ -208,6 +208,12 @@
     font-weight: 600;
   }
   .person-card .bio { font-size: 0.95rem; line-height: 1.6; }
+  .person-card .portrait {
+    float: right; width: 92px; height: 92px; object-fit: cover; object-position: top;
+    border-radius: 50%; border: 3px solid var(--sepia-dark); margin: 0 0 0.6rem 0.9rem;
+    box-shadow: 0 2px 6px var(--shadow); filter: sepia(0.25);
+  }
+  .person-card .portrait-src { clear: both; display: block; font-size: 0.72rem; color: var(--ink-light); font-style: italic; margin-top: 0.6rem; }
 
   /* === TIMELINE === */
   .timeline { position: relative; margin: 2rem 0; padding-left: 2.5rem; }
@@ -581,6 +587,74 @@
     color: var(--ink-light);
     font-style: italic;
   }
+  .lb-temoignage {
+    font-size: 0.88rem;
+    line-height: 1.6;
+    background: rgba(196,149,106,0.14);
+    border-left: 3px solid var(--accent);
+    border-radius: 0 4px 4px 0;
+    padding: 0.7rem 0.9rem;
+  }
+  .lb-temoignage .lb-temoignage-src {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.78rem;
+    color: var(--ink-light);
+    font-style: italic;
+  }
+  .cat-tem {
+    position: absolute; top: 6px; right: 6px;
+    background: var(--accent); color: white;
+    font-size: 0.75rem; padding: 0 0.35rem; border-radius: 8px;
+  }
+  .badge-temoignage {
+    display: inline-block;
+    background: var(--accent);
+    color: white;
+    padding: 0.1rem 0.45rem;
+    border-radius: 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+  }
+  .doc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 1.2rem;
+    margin: 1.2rem 0 0.5rem;
+  }
+  .doc-item {
+    background: var(--card-bg);
+    border: 1px solid var(--sepia-dark);
+    border-radius: 6px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px var(--shadow);
+    cursor: zoom-in;
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+  .doc-item img { width: 100%; height: 160px; object-fit: cover; display: block; background: var(--sepia-dark); }
+  .doc-item figcaption { padding: 0.6rem 0.8rem; font-size: 0.82rem; line-height: 1.45; color: var(--ink-light); }
+  .doc-item figcaption strong { color: var(--ink); display: block; margin-bottom: 0.15rem; }
+  .doc-overlay {
+    display: none; position: fixed; inset: 0; z-index: 3000;
+    background: rgba(20,15,10,0.9); align-items: center; justify-content: center; cursor: zoom-out;
+  }
+  .doc-overlay.open { display: flex; }
+  .doc-overlay img { max-width: 95vw; max-height: 90vh; box-shadow: 0 0 40px rgba(0,0,0,0.6); }
+  .doc-overlay .doc-cap { position: absolute; bottom: 1rem; left: 0; right: 0; text-align: center; color: var(--sepia); font-size: 0.9rem; padding: 0 2rem; }
+  .contrib-box {
+    background: var(--card-bg);
+    border: 1px solid var(--sepia-dark);
+    border-left: 4px solid var(--accent);
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+    line-height: 1.7;
+  }
 
   @media (max-width: 768px) {
     .lightbox-body { grid-template-columns: 1fr; }
@@ -622,6 +696,7 @@
   <a href="#arbre">Arbre familial</a>
   <a href="#personnages">Personnages</a>
   <a href="#chronologie">Chronologie</a>
+  <a href="#contributions">Documents de famille</a>
   <a href="#extraits">Extraits</a>
   <a href="#lieux">Lieux</a>
   <a href="#catalogue">Catalogue</a>
@@ -648,7 +723,7 @@
       <div class="tree-root tree-person">
         <span class="tree-name">Émile Decré</span>
         <span class="tree-dates"> — 1831-1868 (†36 ans)</span>
-        <span class="tree-role"> — père d'Eulalie et Marie</span>
+        <span class="tree-role"> — père d'Eulalie et d'Albert</span>
       </div>
 
       <div class="tree-level">
@@ -657,13 +732,25 @@
           <span class="tree-name">Eulalie Zoé Marguerite Decré</span>
           <span class="tree-dates"> — 1867, Laval – 1938, Laval (†70 ans)</span>
           <span class="tree-role"> — destinataire principale de la collection</span>
-          <br><span class="tree-marriage">× Michel Jean Baptiste Lemonnier (1861-1910, †48 ans), mécanicien, Ernée</span>
+          <br><span class="tree-marriage">× Michel Jean Baptiste Lemonnier (1861-1910, †48 ans), constructeur-mécanicien (machines agricoles), rue du Dessous puis 13 rue Clouard, Ernée</span>
 
           <div class="tree-level">
             <div class="tree-person">
               <span class="tree-name">Yvonne Michelle Eulalie Lemonnier</span>
-              <span class="tree-dates"> — *1893, Ernée (10 ans de plus que Guy)</span>
+              <span class="tree-dates"> — 1893, Ernée – 15 déc. 1921, Toulon (†28 ans)</span>
               <span class="tree-role"> — fille aînée</span>
+              <br><span class="tree-marriage">× Édouard Decré (1872, Le Blanc – 1924, † à bord du paquebot <em>Alba</em>), commissaire de bord (Atlantique, Burdigala, Lutetia) — mariage à Toulon en 1919 (26 juin d'après le registre matricule ; 22 avril selon la famille) — Yvonne est inhumée à Laval (Vaufleury) le 28 décembre 1921</span>
+              <div class="tree-level">
+                <div class="tree-person">
+                  <span class="tree-name">Annick Decré</span>
+                  <span class="tree-dates"> — *8 nov. 1919, Toulon</span>
+                </div>
+                <div class="tree-person">
+                  <span class="tree-name">Alain Decré</span>
+                  <span class="tree-dates"> — *1921, Plougasnou (Finistère)</span>
+                  <span class="tree-role"> — orphelins de mère à 2 ans et 1 mois, de père en 1924 (cf. carte n° 273)</span>
+                </div>
+              </div>
             </div>
 
             <div class="tree-person">
@@ -676,32 +763,41 @@
         </div>
 
         <div class="tree-person" style="margin-top: 1.5rem;">
-          <span class="tree-name">Marie Decré</span>
-          <span class="tree-dates"> — ~1865 (2 ans de plus qu'Eulalie ?)</span>
-          <span class="tree-role"> — sœur d'Eulalie, 34 cartes</span>
+          <span class="tree-name">Albert Decré</span>
+          <span class="tree-dates"> — 7 janv. 1864, Laval – 13 août 1914, Laval (†50 ans)</span>
+          <span class="tree-role"> — frère d'Eulalie, ingénieur des Ponts et Chaussées, mort des suites d'un accident de chantier</span>
+          <br><span class="tree-marriage">× Marie Geslin (2 nov. 1862, Louverné – 8 nov. 1947, Cossé-le-Vivien), fille d'Esprit Geslin, chaufournier à Saint-Ouen-des-Toits — « Marie Decré », 34 cartes, belle-sœur d'Eulalie (elles s'appellent « sœur »)</span>
 
           <div class="tree-level">
             <div class="tree-person">
+              <span class="tree-name">Madeleine Decré</span>
+              <span class="tree-dates"> — *30 nov. 1892, Pré-en-Pail</span>
+              <span class="tree-role"> — aînée</span>
+            </div>
+            <div class="tree-person">
+              <span class="tree-name">Georges « Geo » Decré</span>
+              <span class="tree-dates"> — *14 mars 1895, Pré-en-Pail</span>
+              <span class="tree-role"> — mobilisé fin 1914 à 19 ans, ingénieur électricien (école Bréguet), 40 cartes</span>
+              <br><span class="tree-marriage">× Suzanne « Suzon » Zinsius, petite-fille du capitaine Léon Zinsius (blessé à Solférino, percepteur à La Baconnière) — enfants : Robert et Jean</span>
+            </div>
+            <div class="tree-person">
               <span class="tree-name">René Decré</span>
-              <span class="tree-dates"> — ~1890 (aîné)</span>
-              <span class="tree-role"> — neveu d'Eulalie</span>
+              <span class="tree-dates"> — *27 avril 1896, Cossé-le-Vivien</span>
+              <span class="tree-role"> — ingénieur agronome (Grignon), réformé</span>
+              <br><span class="tree-marriage">× Marcelle Moutreux — enfants : Denise « Nizette » et Jacques</span>
             </div>
             <div class="tree-person">
-              <span class="tree-name">Georges Decré</span>
-              <span class="tree-dates"> — ~1893 (~22 ans en 1915 à la mobilisation)</span>
-              <span class="tree-role"> — ingénieur S.M.I.E., 40 cartes, parcours militaire 14-18</span>
-            </div>
-            <div class="tree-person">
-              <span class="tree-name">Suzanne Decré</span>
-              <span class="tree-dates"> — ~1895</span>
-              <span class="tree-role"> — nièce d'Eulalie</span>
-            </div>
-            <div class="tree-person">
-              <span class="tree-name">Marguerite Decré</span>
-              <span class="tree-dates"> — ~1897</span>
-              <span class="tree-role"> — nièce d'Eulalie</span>
+              <span class="tree-name">Marguerite « Didite » Decré</span>
+              <span class="tree-dates"> — *8 mai 1901, Cossé-le-Vivien</span>
+              <span class="tree-role"> — institutrice puis assistante sociale à Nantes</span>
             </div>
           </div>
+        </div>
+
+        <div class="tree-person" style="margin-top: 1.5rem;">
+          <span class="tree-name">Alphonse Athanase Édouard Decré</span>
+          <span class="tree-dates"> — 8 mai 1872, Le Blanc (Indre) – 1924, en mer</span>
+          <span class="tree-role"> — parent Decré (lien exact à préciser), commissaire de bord (Messageries Maritimes, Sud-Atlantique) ; marié à Bordeaux en 1904 puis divorcé, il épouse Yvonne Lemonnier à Toulon en 1919 (voir ci-dessus)</span>
         </div>
 
       </div>
@@ -713,44 +809,62 @@
 <section id="personnages">
   <div class="container">
     <h2>Les personnages principaux</h2>
-    <p>Ces six correspondants représentent à eux seuls plus de la moitié des cartes identifiées de la collection.</p>
+    <p>Ces correspondants représentent à eux seuls plus de la moitié des cartes identifiées de la collection. Les biographies ont été corrigées et complétées en août 2026 grâce aux archives familiales de Gérard Decré (voir <a href="#contributions">Contributions</a>).</p>
 
     <div class="person-grid">
 
       <div class="person-card">
         <div class="name">Eulalie Lemonnier-Decré</div>
         <div class="meta">1867-1938 (†70 ans) · 13 rue Clouard, Ernée · <span class="badge">Destinataire</span></div>
-        <div class="bio">Née à Laval, mariée à Michel Lemonnier (mécanicien), veuve dès 1910 à 42 ans. Elle élève seule ses deux enfants, Yvonne (17 ans) et Guy (7 ans), dans cette petite ville de Mayenne. Centre du réseau familial, elle reçoit des nouvelles de sa sœur Marie, de son neveu Georges au front, de son fils à l'école d'ingénieurs. Ses propres cartes, signées « m.l.d. », révèlent une femme cultivée et attentionnée.</div>
+        <div class="bio">Née à Laval, mariée à Michel Lemonnier (mécanicien), veuve dès 1910 à 42 ans. Elle élève seule ses deux enfants, Yvonne (17 ans) et Guy (7 ans), dans cette petite ville de Mayenne. Centre du réseau familial, elle reçoit des nouvelles de sa belle-sœur Marie, de son neveu Georges au front, de son gendre Édouard en mer, de son fils à l'école d'ingénieurs. Ses propres cartes, signées « m.l.d. » (Marguerite Lemonnier-Decré), révèlent une femme cultivée et attentionnée. Elle repose avec ses deux enfants dans le premier des trois caveaux Decré du cimetière de Vaufleury à Laval.</div>
       </div>
 
       <div class="person-card">
+        <img class="portrait" src="documents/portrait_guy.jpg" alt="Guy Lemonnier enfant, vers 1911">
         <div class="name">Guy Lemonnier</div>
         <div class="meta">1903-1979 (†75 ans) · Ernée → Angers → Tunisie → Caen · <span class="badge">38 cartes</span></div>
         <div class="bio">Fils d'Eulalie, il entre à l'ENSAM d'Angers à 20 ans (1923-1927), fait son service au 4e Zouaves en Tunisie vers 22-24 ans, puis s'installe comme ingénieur à Caen. Ses cartes à sa « chère Maman » racontent la vie d'un jeune homme studieux, affectueux et aventureux. Il épouse Augusta Boulay de Craon en 1931, à 28 ans.</div>
+        <span class="portrait-src">Photo vers 1911, archives Gérard Decré</span>
       </div>
 
       <div class="person-card">
-        <div class="name">Georges Decré</div>
-        <div class="meta">~1893-? · Ingénieur S.M.I.E. · <span class="badge">40 cartes</span></div>
-        <div class="bio">Neveu d'Eulalie, fils de Marie. Mobilisé à environ 22 ans en 1915, il embarque sur le <em>Burdigala</em> pour les Dardanelles, combat à Salonique, est hospitalisé à Toulon pour paludisme à 24 ans. Après la guerre, il cherche un emploi d'ingénieur dans les revues industrielles. Sa carte du 12 novembre 1918 (à 25 ans), le lendemain de l'Armistice, est l'un des joyaux de la collection. Il annonce son mariage en 1923 (à ~30 ans) depuis Paris.</div>
+        <img class="portrait" src="documents/portrait_georges.jpg" alt="Georges Decré adolescent, vers 1911">
+        <div class="name">Georges « Geo » Decré</div>
+        <div class="meta">1895, Pré-en-Pail · Ingénieur électricien (Bréguet), puis S.M.I.E. · <span class="badge">~40 cartes</span></div>
+        <div class="bio">Neveu et filleul d'Eulalie, fils d'Albert Decré et de Marie Geslin. Il perd son père en août 1914 et est mobilisé fin 1914, à 19 ans. Il sert au 8e génie aux Dardanelles et à Salonique, est évacué à Toulon pour paludisme en 1917, puis rejoint le front français vers Nancy. Sa carte du 12 novembre 1918, le lendemain de l'Armistice, est l'un des joyaux de la collection. Il épouse Suzanne « Suzon » Zinsius et s'installe à Paris comme ingénieur ; leurs fils Robert et Jean naissent dans les années 1920. Plusieurs cartes signées « Decré » qui lui étaient attribuées sont en réalité d'Édouard (voir ci-dessous).</div>
+        <span class="portrait-src">Photo vers 1911, archives Gérard Decré</span>
       </div>
 
       <div class="person-card">
-        <div class="name">Marie Decré</div>
-        <div class="meta">~1865-? · Châteaubriant, Cossé-le-Vivien · <span class="badge">34 cartes</span></div>
-        <div class="bio">Sœur cadette (ou aînée ?) d'Eulalie. Ses cartes signées « Ta sœur qui t'aime, Marie » racontent le quotidien d'une mère de quatre enfants entre Châteaubriant et Cossé. Elle parle de ses « enfants à St Nazaire », de visites médicales, de la vie de ses fils au front. Un lien sororal fort qui traverse trente ans de correspondance.</div>
+        <img class="portrait" src="documents/portrait_albert.jpg" alt="Albert Decré, vers 1912">
+        <div class="name">Marie Decré, née Geslin</div>
+        <div class="meta">1862, Louverné – 1947, Cossé-le-Vivien · <span class="badge">34 cartes</span></div>
+        <div class="bio">Belle-sœur d'Eulalie : épouse d'Albert Decré, le frère d'Eulalie, ingénieur des Ponts et Chaussées mort à Laval en août 1914 des suites d'un accident de chantier. Les deux femmes s'appellent « sœur » et signent « Ta sœur qui t'aime ». Fille d'un chaufournier de Saint-Ouen-des-Toits, veuve à 51 ans avec deux fils mobilisés, elle raconte depuis Cossé-le-Vivien le quotidien d'une mère de quatre enfants : Madeleine, Georges, René et Marguerite « Didite ». Un lien fort qui traverse trente ans de correspondance.</div>
+        <span class="portrait-src">Portrait : Albert Decré, son mari, vers 1912 — archives Gérard Decré</span>
       </div>
 
       <div class="person-card">
-        <div class="name">Marguerite Lemonnier (mère)</div>
-        <div class="meta">Mère d'Eulalie et de Guy · <span class="badge">8 cartes</span></div>
-        <div class="bio">Mère de famille, elle signe « M. Le D. » (Madame Lemonnier-Decré). Ses cartes, plus rares, témoignent d'une présence maternelle bienveillante. Elle écrit à ses enfants et petits-enfants avec la même tendresse qu'Eulalie témoigne à Guy.</div>
+        <img class="portrait" src="documents/edouard_burdigala_bordeaux.jpg" alt="Le paquebot Burdigala">
+        <div class="name">Édouard Decré</div>
+        <div class="meta">1872, Le Blanc – 1924, † en mer · Commissaire de bord · <span class="badge">~5 cartes</span></div>
+        <div class="bio">Alphonse Athanase Édouard Decré, parent Decré né dans l'Indre, a beaucoup bourlingué : Bordeaux, Toulon, Brest. Son registre matricule le montre aux Messageries Maritimes dès 1897, commissaire à bord de l'<em>Atlantique</em> en 1902, embarqué sur le <em>Burdigala</em> en 1912, puis commissaire (le n° 2 du bord) des paquebots <em>Lutetia</em> et <em>Burdigala</em> de la Sud-Atlantique pendant la guerre, jusqu'au naufrage du <em>Burdigala</em> sur une mine au large de Kéa (Grèce) le 14 novembre 1916. Marié à Bordeaux en 1904, divorcé, père d'enfants d'un premier lit (carte n° 53, 1912), il épouse à Toulon en 1919 Yvonne Lemonnier, la fille d'Eulalie. Deux enfants, Annick (1919) et Alain (1921), puis le drame : Yvonne meurt à Toulon en décembre 1921, Édouard à bord de l'<em>Alba</em> au retour sur Bordeaux en 1924. Ses cartes, signées « E. Decré » et vouvoyant « ma chère Marguerite », étaient jusqu'ici attribuées à Georges.</div>
+        <span class="portrait-src">Le Burdigala à Bordeaux — carte postale, archives Gérard Decré</span>
       </div>
 
       <div class="person-card">
-        <div class="name">Yvonne Lemonnier</div>
-        <div class="meta">*1893, Ernée (10 ans de plus que Guy) · <span class="badge">4 cartes</span></div>
-        <div class="bio">Fille aînée d'Eulalie et Michel, née dix ans avant Guy. Elle a 17 ans au décès de son père en 1910. Ses rares cartes dans la collection suggèrent une vie plus éloignée du foyer familial d'Ernée. Elle s'installe probablement à Toulon.</div>
+        <img class="portrait" src="documents/portrait_yvonne.jpg" alt="Yvonne Lemonnier, vers 1911">
+        <div class="name">Yvonne Lemonnier, épouse Decré</div>
+        <div class="meta">1893, Ernée – 1921, Toulon (†28 ans) · <span class="badge">4 cartes</span></div>
+        <div class="bio">Fille aînée d'Eulalie et Michel, née dix ans avant Guy. Elle a 17 ans au décès de son père en 1910. Enceinte, elle épouse Édouard Decré à Toulon en 1919 ; Annick naît en novembre 1919 à Toulon, Alain en 1921 à Plougasnou. Elle meurt à Toulon le 15 décembre 1921. Édouard la ramène à Laval, où elle repose dans le caveau Decré avec sa mère et son frère ; la pierre tombale porte « Yvonne Decré née Lemonnier, épouse d'Édouard Decré ». Après cette date, toute carte signée d'un enfant à « chère Maman » est de Guy.</div>
+        <span class="portrait-src">Photo vers 1911, archives Gérard Decré</span>
+      </div>
+
+      <div class="person-card">
+        <img class="portrait" src="documents/portrait_marguerite.jpg" alt="Marguerite Decré, vers 1911">
+        <div class="name">Marguerite « Didite » Decré</div>
+        <div class="meta">1901, Cossé-le-Vivien · Institutrice, puis assistante sociale à Nantes · <span class="badge">9 cartes</span></div>
+        <div class="bio">Benjamine d'Albert et Marie, nièce d'Eulalie. Elle lui écrit dès 1915, à 14 ans, après une maladie (carte n° 248), puis régulièrement dans les années 1920 : nouvelles de « Geo », de « Suzon », de « maman », modèles de crochet, un accident d'automobile sans gravité. « Dédite » dans les cartes de sa mère.</div>
+        <span class="portrait-src">Photo vers 1911, archives Gérard Decré</span>
       </div>
 
     </div>
@@ -772,6 +886,14 @@
         <div class="tl-text">Mariage d'Eulalie avec Michel Jean Baptiste Lemonnier, mécanicien à Ernée</div>
       </div>
       <div class="tl-item">
+        <div class="tl-year">26 déc. 1891</div>
+        <div class="tl-text">Mlle Appoline Decré achète la concession perpétuelle « Famille Decré » au cimetière de Vaufleury à Laval, où reposeront Yvonne, Eulalie et Guy</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1892-1901</div>
+        <div class="tl-text">Naissance des quatre enfants d'Albert Decré (frère d'Eulalie) et de Marie Geslin : Madeleine (1892) et Georges (1895) à Pré-en-Pail, René (1896) et Marguerite « Didite » (1901) à Cossé-le-Vivien — cousins germains d'Yvonne et Guy</div>
+      </div>
+      <div class="tl-item">
         <div class="tl-year">1893</div>
         <div class="tl-text">Naissance d'Yvonne Michelle Eulalie Lemonnier à Ernée</div>
       </div>
@@ -788,16 +910,36 @@
         <div class="tl-text">Décès de Michel Lemonnier au 13 rue Clouard, à 48 ans — Eulalie devient veuve à 42 ans, Yvonne a 17 ans, Guy n'a que 7 ans</div>
       </div>
       <div class="tl-item">
+        <div class="tl-year">13 août 1914</div>
+        <div class="tl-text">Mort à Laval d'Albert Decré, 50 ans, ingénieur des Ponts et Chaussées, des suites d'un accident de chantier. Marie Geslin reste veuve avec quatre enfants ; Georges est mobilisé quelques mois plus tard, à 19 ans</div>
+      </div>
+      <div class="tl-item">
         <div class="tl-year">1914-1918</div>
-        <div class="tl-text">Grande Guerre — Georges Decré mobilisé à ~22 ans : Dardanelles, Salonique, Nancy, Toulon (paludisme). Guy est un enfant de 11-15 ans à Ernée</div>
+        <div class="tl-text">Grande Guerre — Georges Decré (8e génie) : Dardanelles, Salonique, Toulon (paludisme, 1917), front de Nancy. Édouard Decré, commissaire de bord du <em>Burdigala</em> réquisitionné comme transport de troupes, croise Georges aux Dardanelles et lui offre un sextant. Guy est un enfant de 11-15 ans à Ernée</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">14 nov. 1916</div>
+        <div class="tl-text">Le <em>Burdigala</em> saute sur une mine allemande et coule au large de l'île de Kéa (Grèce)</div>
       </div>
       <div class="tl-item">
         <div class="tl-year">12 nov. 1918</div>
         <div class="tl-text">Georges écrit depuis Cossé : « J'ai eu le bonheur d'arriver en permission en même temps que l'annonce de la signature de l'armistice »</div>
       </div>
       <div class="tl-item">
+        <div class="tl-year">1919</div>
+        <div class="tl-text">Mariage à Toulon (juin 1919 d'après le registre matricule) d'Yvonne Lemonnier (26 ans) avec Édouard Decré (47 ans), commissaire de bord divorcé — naissance d'Annick à Toulon le 8 novembre</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1921</div>
+        <div class="tl-text">Naissance d'Alain à Plougasnou (Finistère) — Yvonne meurt à Toulon le 15 décembre, à 28 ans. Édouard la ramène à Laval, dans le caveau Decré du cimetière de Vaufleury</div>
+      </div>
+      <div class="tl-item">
         <div class="tl-year">1923</div>
-        <div class="tl-text">Guy entre à l'ENSAM d'Angers à 20 ans — Georges (~30 ans) annonce son mariage depuis Paris</div>
+        <div class="tl-text">Guy entre à l'ENSAM d'Angers à 20 ans — Georges (28 ans) annonce son mariage avec Suzanne Zinsius depuis Paris</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1924</div>
+        <div class="tl-text">Mort d'Édouard Decré à bord du paquebot <em>Alba</em>, au retour sur Bordeaux. Annick (4 ans) et Alain (2 ans) sont orphelins ; ils grandiront proches de toute la famille Decré en région parisienne</div>
       </div>
       <div class="tl-item">
         <div class="tl-year">~1925-1927</div>
@@ -817,9 +959,119 @@
       </div>
       <div class="tl-item">
         <div class="tl-year">20 fév. 1938</div>
-        <div class="tl-text">Décès d'Eulalie à Laval, à 70 ans. Guy a 34 ans, marié depuis 7 ans</div>
+        <div class="tl-text">Décès d'Eulalie à Laval, à 70 ans ; inhumée le 22 février dans le caveau Decré de Vaufleury, auprès d'Yvonne. Guy a 34 ans, marié depuis 7 ans</div>
+      </div>
+      <div class="tl-item">
+        <div class="tl-year">1979</div>
+        <div class="tl-text">Mort de Guy Lemonnier à 75 ans ; inhumé le 3 mai 1979 à Vaufleury avec sa mère et sa sœur. La collection passe à ses descendants</div>
       </div>
     </div>
+  </div>
+</section>
+
+<!-- CONTRIBUTIONS -->
+<section id="contributions">
+  <div class="container">
+    <h2>Contributions, photos et documents de famille</h2>
+    <p>Ce site est un travail en cours : les transcriptions et les identifications sont faites à partir des seules cartes, avec l'aide d'outils d'IA, et comportent des erreurs. Les lecteurs qui connaissent la famille sont les mieux placés pour les corriger.</p>
+
+    <div class="contrib-box">
+      <strong>Gérard Decré</strong> — arrière-petit-fils d'Albert Decré, petit-fils de Georges Decré et de Suzanne Zinsius, détenteur des archives de la famille Decré (correspondance, photographies de Guy et Yvonne à Cossé-le-Vivien, objets dont le sextant offert par Édouard à Georges aux Dardanelles). Ses messages d'août 2026 ont permis de :
+      <ul style="margin: 0.6rem 0 0.6rem 1.4rem;">
+        <li>rétablir la place d'<strong>Albert Decré</strong> (1864-1914), frère d'Eulalie, et de son épouse <strong>Marie Geslin</strong> — jusque-là présentée à tort comme la sœur d'Eulalie — avec les dates de naissance de leurs quatre enfants et de leurs conjoints ;</li>
+        <li>faire entrer dans l'histoire <strong>Édouard Decré</strong>, commissaire de bord, époux d'Yvonne Lemonnier, et leurs enfants Annick et Alain, dont le site ignorait tout ;</li>
+        <li>réattribuer à Édouard des cartes signées « E. Decré » données à Georges (n° 36, 53, 63, 106, 273), rendre la carte n° 471 à Guy (Yvonne étant morte en 1921), identifier Didite (n° 248), Marcelle, Geo et Suzon (n° 314), corriger la date de la carte n° 400 (1931) et situer Saint-Roch (n° 42).</li>
+      </ul>
+      Les cartes concernées portent un encart « Témoignage familial » (★ dans le catalogue). Le tableau matricule d'Édouard Decré (Archives départementales de l'Indre, classe 1892) transmis par Gérard Decré confirme son parcours : Messageries Maritimes dès 1897, commissaire à bord de l'<em>Atlantique</em> en 1902, embarqué sur le <em>Burdigala</em> en septembre 1912, puis commissaire des paquebots <em>Lutetia</em> et <em>Burdigala</em> pendant la guerre ; un premier mariage à Bordeaux en 1904, et le mariage avec Yvonne Lemonnier à Toulon en 1919. Son dossier de navigant est conservé aux archives de la Compagnie Générale Maritime (French Lines &amp; Compagnies, Le Havre), qui détiennent les fonds des Messageries Maritimes et de la Transat.
+    </div>
+
+    <h3>Dossier Édouard Decré, commissaire de bord</h3>
+    <p>Documents transmis par Gérard Decré (cliquer pour agrandir). Ils éclairent les cartes n° 36, 53, 63, 106 et 273.</p>
+    <div class="doc-grid">
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/edouard_burdigala_bordeaux.jpg" data-cap="Le Burdigala à quai à Bordeaux, Compagnie de Navigation Sud-Atlantique — carte postale ancienne (éd. P.P.), collection Gérard Decré">
+        <img src="documents/edouard_burdigala_bordeaux.jpg" alt="Le Burdigala à Bordeaux" loading="lazy">
+        <figcaption><strong>Le Burdigala à Bordeaux</strong>Ex-<em>Kaiser Friedrich</em> (1898), racheté en 1912 par la Sud-Atlantique pour la ligne Bordeaux – Amérique du Sud. Édouard y embarque le 20 septembre 1912. Réquisitionné en 1914-1916 comme transport de troupes (Dardanelles, Salonique).</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/edouard_burdigala_pauillac.jpg" data-cap="Le Burdigala devant le phare du Gaët (Pauillac), à l'entrée de la Gironde — carte postale ancienne, collection Gérard Decré">
+        <img src="documents/edouard_burdigala_pauillac.jpg" alt="Le Burdigala devant le phare du Gaët à Pauillac" loading="lazy">
+        <figcaption><strong>Le Burdigala à Pauillac</strong>Devant le phare du Gaët, à l'embouchure de la Gironde. Le paquebot saute sur une mine du sous-marin allemand U-73 et coule au large de l'île de Kéa (Grèce) le 14 novembre 1916.</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/edouard_matricule_indre.jpg" data-cap="Registre matricule d'Alphonse Athanase Édouard Decré, classe 1892 — Archives départementales de l'Indre (archives36.cg36.fr), extrait transmis par Gérard Decré">
+        <img src="documents/edouard_matricule_indre.jpg" alt="Registre matricule d'Édouard Decré" loading="lazy">
+        <figcaption><strong>Registre matricule (Archives de l'Indre)</strong>Bordeaux dès 1891 ; Messageries Maritimes en 1897 ; « embarqué comme commissaire à bord de l'<em>Atlantique</em> » en 1902 ; Messageries Maritimes en 1911 ; « embarqué sur le <em>Burdigala</em> » le 20-9-1912. Rappelé en décembre 1914, renvoyé en avril 1915 comme « commissaire à bord des paquebots <em>Lutetia</em> et <em>Burdigala</em> ».</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/edouard_mariage_toulon_1919.jpg" data-cap="Mentions d'état civil au registre matricule : mariage à Bordeaux le 6 juillet 1904, puis « marié le 26 juin 1919 à Toulon (Var) avec Yvonne Michelle Eulalie Lemonnier » (mention du 16 juillet 1919) — transmis par Gérard Decré">
+        <img src="documents/edouard_mariage_toulon_1919.jpg" alt="Mention du mariage d'Édouard Decré avec Yvonne Lemonnier" loading="lazy">
+        <figcaption><strong>Deux mariages</strong>Mention marginale : « Par acte du 6 juillet 1904 en la mairie de Bordeaux, Decré Alphonse Athanase Édouard épouse … Célestine », puis divorce ; « marié le 26 juin 1919 à Toulon (Var) avec Yvonne Michelle Eulalie Lemonnier », mention portée le 16 juillet 1919.</figcaption>
+      </figure>
+    </div>
+    <div class="doc-overlay" id="doc-overlay" onclick="this.classList.remove('open')">
+      <img id="doc-overlay-img" src="" alt="">
+      <div class="doc-cap" id="doc-overlay-cap"></div>
+    </div>
+
+    <h3>Photographies de famille</h3>
+    <p>Photographies des archives de Gérard Decré. Elles donnent enfin un visage aux correspondants de la collection.</p>
+    <div class="doc-grid">
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/photo_guy_yvonne_lemonnier.jpg" data-cap="Guy et Yvonne Lemonnier, les deux enfants d'Eulalie, vers 1910 — archives Gérard Decré">
+        <img src="documents/photo_guy_yvonne_lemonnier.jpg" alt="Guy et Yvonne Lemonnier enfants" loading="lazy">
+        <figcaption><strong>Guy et Yvonne Lemonnier</strong>Les deux enfants d'Eulalie, vers 1910-1911 : Guy a 7 ou 8 ans, Yvonne dix de plus. Ce sont eux qu'Eulalie élève seule à Ernée après la mort de Michel en 1910.</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/photo_automobile_famille_decre_lemonnier.jpg" data-cap="Les familles Decré et Lemonnier en automobile, avant 1914 : Albert Decré (à la casquette) et Marie Geslin, leurs enfants Madeleine, Georges et Marguerite, et leurs neveux Yvonne et Guy Lemonnier — archives Gérard Decré">
+        <img src="documents/photo_automobile_famille_decre_lemonnier.jpg" alt="Les Decré et les Lemonnier en automobile avant 1914" loading="lazy">
+        <figcaption><strong>En automobile, avant la guerre</strong>La seule photo où l'on voit Albert Decré, l'homme à la casquette, mort en août 1914. Autour de lui : sa femme Marie Geslin, ses enfants Madeleine, Georges (debout) et Marguerite (assise sur le marchepied), et ses neveux Yvonne et Guy Lemonnier (le garçon debout à gauche). Vers 1912-1913, devant la grille de la maison de Cossé.</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/photo_guy_madeleine_yvonne_marguerite_georges.jpg" data-cap="Les cousins réunis : Guy Lemonnier, Madeleine Decré, Yvonne Lemonnier, Marguerite « Didite » Decré et Georges Decré, vers 1911 — archives Gérard Decré">
+        <img src="documents/photo_guy_madeleine_yvonne_marguerite_georges.jpg" alt="Guy, Madeleine, Yvonne, Marguerite et Georges" loading="lazy">
+        <figcaption><strong>Les cousins germains</strong>De gauche à droite : Guy Lemonnier, Madeleine Decré, Yvonne Lemonnier, Marguerite « Didite » Decré et Georges Decré, vers 1911. Les enfants d'Eulalie et ceux d'Albert ont grandi ensemble entre Ernée et Cossé-le-Vivien.</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/photo_maison_decre_cosse.jpg" data-cap="La maison Decré à Cossé-le-Vivien, années 1930 — archives Gérard Decré">
+        <img src="documents/photo_maison_decre_cosse.jpg" alt="Maison Decré à Cossé-le-Vivien" loading="lazy">
+        <figcaption><strong>La maison de Cossé-le-Vivien</strong>La demeure à tourelle de la famille Decré à Cossé, d'où Marie Geslin écrit à sa belle-sœur pendant trente ans, et où Georges arrive en permission le 12 novembre 1918 (carte n° 186). Années 1930.</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/photo_decre_lemonnier_cosse.jpg" data-cap="Les familles Decré et Lemonnier réunies à Cossé-le-Vivien, fin des années 1930 — archives Gérard Decré">
+        <img src="documents/photo_decre_lemonnier_cosse.jpg" alt="Les Decré et les Lemonnier à Cossé" loading="lazy">
+        <figcaption><strong>Les Decré et les Lemonnier à Cossé</strong>Réunion des deux familles devant le mur du jardin de Cossé, à la fin des années 1930 ; au centre, la doyenne, Marie Geslin (1862-1947). Identification des personnes en cours.</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/photo_craon_enfants_janot_jacques.jpg" data-cap="À Craon, les filles de Guy et Augusta Lemonnier avec leurs cousins Jean « Janot » Decré (fils de Georges et Suzanne) et Jacques Decré (fils de René et Marcelle), fin des années 1930 — archives Gérard Decré">
+        <img src="documents/photo_craon_enfants_janot_jacques.jpg" alt="Enfants à Craon avec Janot et Jacques Decré" loading="lazy">
+        <figcaption><strong>À Craon, la génération suivante</strong>« Les filles » avec Janot et Jacques : Jean « Janot » Decré, fils de Georges et Suzanne, et Jacques Decré, fils de René et Marcelle, en visite à Craon chez Guy et Augusta Lemonnier (née Boulay), fin des années 1930. Le lien avec la <a href="https://krishnanaudinperso.github.io/Cartes-postales-Boulay/" target="_blank" rel="noopener">collection Boulay</a>.</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/photo_decre_chez_guy_craon.jpg" data-cap="Les Decré chez Guy Lemonnier à Craon, fin des années 1930 : trois générations devant la façade couverte de vigne vierge (panneau « S'adresser au bureau ») — archives Gérard Decré">
+        <img src="documents/photo_decre_chez_guy_craon.jpg" alt="Les Decré chez Guy à Craon" loading="lazy">
+        <figcaption><strong>Les Decré chez Guy, à Craon</strong>Même façade que la photo des enfants : la famille Decré en visite chez Guy et Augusta à Craon, fin des années 1930. Trois générations, de la doyenne assise au centre aux petits-enfants. Identification nominative en cours avec Gérard Decré.</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/photo_maison_decre_cosse_aujourdhui.jpg" data-cap="La maison Decré de Cossé-le-Vivien aujourd'hui — photographie Gérard Decré">
+        <img src="documents/photo_maison_decre_cosse_aujourdhui.jpg" alt="La maison Decré de Cossé-le-Vivien aujourd'hui" loading="lazy">
+        <figcaption><strong>La maison de Cossé aujourd'hui</strong>La demeure à tourelle de brique, toujours debout au bord de la route, un siècle après les cartes de Marie Geslin.</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/photo_portrait_garcon.jpg" data-cap="Portrait d'un jeune garçon, années 1930, conservé avec la photo de Craon — archives Gérard Decré (identification à préciser)">
+        <img src="documents/photo_portrait_garcon.jpg" alt="Portrait d'un jeune garçon" loading="lazy">
+        <figcaption><strong>Portrait d'enfant</strong>Années 1930, conservé avec la photographie de Craon. Identité à confirmer (Jean ou Jacques Decré ?).</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/photo_trois_fillettes.jpg" data-cap="Trois fillettes devant une grille, vers 1900-1910 — archives Gérard Decré (identification à préciser)">
+        <img src="documents/photo_trois_fillettes.jpg" alt="Trois fillettes devant une grille" loading="lazy">
+        <figcaption><strong>Trois fillettes</strong>Vers 1900-1910, devant le pilier d'une grille. Identification à préciser — peut-être des enfants Decré ou Geslin.</figcaption>
+      </figure>
+    </div>
+
+    <h3>Documents</h3>
+    <div class="doc-grid">
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/carte_entete_michel_lemonnier_1906.jpg" data-cap="Carte commerciale à en-tête de Michel Lemonnier, constructeur-mécanicien, machines et instruments agricoles, rue du Dessous à Ernée, adressée à un marchand d'instruments agricoles d'Auxerre, mars 1906 — archives Gérard Decré">
+        <img src="documents/carte_entete_michel_lemonnier_1906.jpg" alt="En-tête commercial de Michel Lemonnier, Ernée" loading="lazy">
+        <figcaption><strong>L'entreprise de Michel Lemonnier (1906)</strong>« Machines &amp; instruments agricoles — construction, réparation, échange — M. Lemonnier, constructeur-mécanicien, rue du Dessous, Ernée ». Le mari d'Eulalie, mort en 1910, était constructeur de machines agricoles ; l'adresse de la rue du Dessous précède celle du 13 rue Clouard.</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/concession_decre_vaufleury_laval.jpg" data-cap="Récapitulatif de la concession perpétuelle « Famille Decré », cimetière de Vaufleury, Laval (mairie de Laval) — transmis par Gérard Decré">
+        <img src="documents/concession_decre_vaufleury_laval.jpg" alt="Concession Decré au cimetière de Vaufleury" loading="lazy">
+        <figcaption><strong>Le caveau Decré de Vaufleury (Laval)</strong>Concession perpétuelle achetée le 26 décembre 1891 par Mlle Appoline Decré, 67 rue de Rennes à Laval. Y reposent notamment Joseph Dagobert Decré et Jeanne Lemercier (1891), Appoline (1901), puis Yvonne Lemonnier épouse Decré (inhumée le 28 décembre 1921), Eulalie Decré veuve Lemonnier (22 février 1938) et Guy Lemonnier (3 mai 1979).</figcaption>
+      </figure>
+      <figure class="doc-item" onclick="openDoc(this)" data-src="documents/genealogie_decre_landru_manuscrite.jpg" data-cap="Généalogie manuscrite « Decré – Landru », document familial ancien annoté à l'encre rouge — archives Gérard Decré">
+        <img src="documents/genealogie_decre_landru_manuscrite.jpg" alt="Généalogie manuscrite Decré-Landru" loading="lazy">
+        <figcaption><strong>Généalogie manuscrite Decré – Landru</strong>Tableau ancien des ascendances Decré et Landru, avec la lignée directe soulignée en rouge. On y retrouve Joseph Dagobert Decré, époux de Jeanne Lemercier, inhumés dans le caveau de Vaufleury en 1891. Document à exploiter pour remonter au-delà d'Émile Decré.</figcaption>
+      </figure>
+    </div>
+
+    <p style="margin-top:1.5rem;">Vous reconnaissez un personnage, un lieu, une écriture ? Utilisez le <a href="#commentaires">formulaire de commentaire</a> en bas de page.</p>
   </div>
 </section>
 
@@ -966,6 +1218,10 @@
           <div class="lb-label">Notes</div>
           <div class="lb-value lb-notes" id="lb-notes"></div>
         </div>
+        <div class="lb-section" id="lb-temoignage-section">
+          <div class="lb-label">Témoignage familial</div>
+          <div class="lb-temoignage" id="lb-temoignage"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -975,7 +1231,7 @@
 <footer>
   <p>Collection Lemonnier-Decré — 461 cartes postales familiales (1900-1935)</p>
   <p>Numérisées et transcrites par Krishna Naudin · Analyse assistée par IA (Claude & Gemini)</p>
-  <p style="margin-top: 0.5rem; opacity: 0.6;">Dernière mise à jour : mars 2026</p>
+  <p style="margin-top: 0.5rem; opacity: 0.6;">Dernière mise à jour : septembre 2026 — généalogie Decré corrigée grâce à Gérard Decré</p>
 </footer>
 
 <script src="cards_data.js"></script>
@@ -995,10 +1251,11 @@ const senderCounts = {};
 CARDS_DATA.forEach(c => {
   let s = c.exp || '(sans expéditeur)';
   if (s.includes('Guy Lemonnier')) s = 'Guy Lemonnier';
-  else if (s.includes('Marie Decré')) s = 'Marie Decré (sœur d\'Eulalie)';
+  else if (s.includes('Marie Decré')) s = 'Marie Decré (belle-sœur d\'Eulalie)';
   else if (s.includes('G. Decré')) s = 'Georges Decré';
+  else if (s.includes('Édouard Decré')) s = 'Édouard Decré';
+  else if (s.includes('Marguerite Decré')) s = 'Marguerite « Didite » Decré';
   else if (s.includes('Eulalie')) s = 'Eulalie Lemonnier';
-  else if (s.includes('Marguerite Lemonnier')) s = 'Marguerite Lemonnier (mère)';
   else if (s.includes('Yvonne Lemonnier')) s = 'Yvonne Lemonnier';
   else if (s.includes('Charlotte')) s = 'Charlotte';
   else if (s.includes('Inconnu') || s.includes('Non identifié') || s.includes('inconnu')) s = '(non identifié)';
@@ -1046,17 +1303,20 @@ function applyFilters() {
     if (sender) {
       let s = c.exp || '(sans expéditeur)';
       if (s.includes('Guy Lemonnier')) s = 'Guy Lemonnier';
-      else if (s.includes('Marie Decré')) s = 'Marie Decré (sœur d\'Eulalie)';
+      else if (s.includes('Marie Decré')) s = 'Marie Decré (belle-sœur d\'Eulalie)';
       else if (s.includes('G. Decré')) s = 'Georges Decré';
+      else if (s.includes('Édouard Decré')) s = 'Édouard Decré';
+      else if (s.includes('Marguerite Decré')) s = 'Marguerite « Didite » Decré';
+  else if (s.includes('Édouard Decré')) s = 'Édouard Decré';
+  else if (s.includes('Marguerite Decré')) s = 'Marguerite « Didite » Decré';
       else if (s.includes('Eulalie')) s = 'Eulalie Lemonnier';
-      else if (s.includes('Marguerite Lemonnier')) s = 'Marguerite Lemonnier (mère)';
       else if (s.includes('Yvonne Lemonnier')) s = 'Yvonne Lemonnier';
       else if (s.includes('Charlotte')) s = 'Charlotte';
       else if (s.includes('Inconnu') || s.includes('Non identifié') || s.includes('inconnu')) s = '(non identifié)';
       if (s !== sender) return false;
     }
     if (query) {
-      const haystack = `${c.exp} ${c.dest} ${c.trans} ${c.notes} ${c.date} carte ${c.n}`.toLowerCase();
+      const haystack = `${c.exp} ${c.dest} ${c.trans} ${c.notes} ${c.temoignage || ''} ${c.date} carte ${c.n}`.toLowerCase();
       return haystack.includes(query);
     }
     return true;
@@ -1094,6 +1354,7 @@ function renderCatalog() {
       <div class="cat-thumb">
         <img src="${imgPath(c.n, 'verso')}" alt="Carte ${c.n}" loading="lazy" onerror="this.style.display='none'" />
         <span class="cat-num">#${c.n}</span>
+        ${c.temoignage ? '<span class="cat-tem" title="Témoignage familial">★</span>' : ''}
       </div>
       <div class="cat-info">
         <div class="cat-sender">${sender}</div>
@@ -1127,12 +1388,18 @@ function goPage(p) {
 }
 
 // ===== LIGHTBOX =====
+function openDoc(el) {
+  document.getElementById('doc-overlay-img').src = el.dataset.src;
+  document.getElementById('doc-overlay-cap').textContent = el.dataset.cap || '';
+  document.getElementById('doc-overlay').classList.add('open');
+}
+function escapeHtml(t) { return String(t).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 function openLightbox(index) {
   currentLbIndex = index;
   currentSide = 'verso';
   const c = filteredCards[index];
 
-  document.getElementById('lb-header').innerHTML = `<span class="lb-card-num">Carte n° ${c.n}</span>`;
+  document.getElementById('lb-header').innerHTML = `<span class="lb-card-num">Carte n° ${c.n}</span>` + (c.temoignage ? '<span class="badge-temoignage">Témoignage familial</span>' : '');
   document.getElementById('lb-sender').textContent = c.exp || '(non renseigné)';
   document.getElementById('lb-dest').textContent = c.dest || '(non renseigné)';
   document.getElementById('lb-date').textContent = c.date || '(non datée)';
@@ -1140,6 +1407,15 @@ function openLightbox(index) {
   document.getElementById('lb-trans').innerHTML = c.trans ? c.trans.replace(/\n/g, '<br>') : '<em>Pas de transcription disponible</em>';
   document.getElementById('lb-notes').textContent = c.notes || '';
   document.getElementById('lb-notes-section').style.display = c.notes ? '' : 'none';
+  const tem = c.temoignage || '';
+  const temEl = document.getElementById('lb-temoignage');
+  if (tem) {
+    const i = tem.lastIndexOf(' — ');
+    temEl.innerHTML = i > 0
+      ? escapeHtml(tem.slice(0, i)) + '<span class="lb-temoignage-src">' + escapeHtml(tem.slice(i + 3)) + '</span>'
+      : escapeHtml(tem);
+  } else temEl.textContent = '';
+  document.getElementById('lb-temoignage-section').style.display = tem ? '' : 'none';
 
   const img = document.getElementById('lb-image');
   img.src = imgPath(c.n, 'verso');
