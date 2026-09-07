@@ -187,6 +187,9 @@
     cursor: pointer;
   }
   .person-card:hover { transform: translateY(-3px); box-shadow: 0 6px 20px var(--shadow); }
+  .person-card.no-cards { cursor: default; }
+  .person-card.no-cards:hover { transform: none; }
+  .person-card .see-cards { clear: both; display: block; margin-top: 0.7rem; font-size: 0.85rem; color: #8a5a3c; font-weight: 600; }
   .person-card .name {
     font-family: 'Playfair Display', serif;
     font-size: 1.2rem;
@@ -813,37 +816,41 @@
 
     <div class="person-grid">
 
-      <div class="person-card">
+      <div class="person-card" data-sender="Marguerite Lemonnier-Decré" title="Voir ses cartes" onclick="filterPerson(this)">
         <div class="name">Marguerite Lemonnier-Decré</div>
         <div class="meta">1867-1938 (†70 ans) · 13 rue Clouard, Ernée · <span class="badge">Destinataire</span></div>
         <div class="bio">Eulalie Zoé Marguerite Decré à l'état civil, « Marguerite » pour tous les siens et sur les cartes qui lui sont adressées. Née à Laval, mariée à Michel Lemonnier (mécanicien), veuve dès 1910 à 42 ans. Elle élève seule ses deux enfants, Yvonne (17 ans) et Guy (7 ans), dans cette petite ville de Mayenne. Centre du réseau familial, elle reçoit des nouvelles de sa belle-sœur Marie, de son neveu Georges au front, de son gendre Édouard en mer, de son fils à l'école d'ingénieurs. Ses propres cartes, signées « m.l.d. » (Marguerite Lemonnier-Decré), révèlent une femme cultivée et attentionnée. Elle repose avec ses deux enfants dans le premier des trois caveaux Decré du cimetière de Vaufleury à Laval.</div>
+        <span class="see-cards">→ Voir ses cartes dans le catalogue</span>
       </div>
 
-      <div class="person-card">
+      <div class="person-card" data-sender="Guy Lemonnier" title="Voir ses cartes" onclick="filterPerson(this)">
         <img class="portrait" src="documents/portrait_guy.jpg" alt="Guy Lemonnier enfant, vers 1911">
         <div class="name">Guy Lemonnier</div>
         <div class="meta">1903-1979 (†75 ans) · Ernée → Angers → Tunisie → Caen · <span class="badge">38 cartes</span></div>
         <div class="bio">Fils de Marguerite, il entre à l'ENSAM d'Angers à 20 ans (1923-1927), fait son service au 4e Zouaves en Tunisie vers 22-24 ans, puis s'installe comme ingénieur à Caen. Ses cartes à sa « chère Maman » racontent la vie d'un jeune homme studieux, affectueux et aventureux. Il épouse Augusta Boulay de Craon en 1931, à 28 ans.</div>
         <span class="portrait-src">Photo vers 1911, archives Gérard Decré</span>
+        <span class="see-cards">→ Voir ses cartes dans le catalogue</span>
       </div>
 
-      <div class="person-card">
+      <div class="person-card" data-sender="Georges Decré" title="Voir ses cartes" onclick="filterPerson(this)">
         <img class="portrait" src="documents/portrait_georges_1914.jpg" alt="Georges Decré en 1914">
         <div class="name">Georges « Geo » Decré</div>
         <div class="meta">1895, Pré-en-Pail · Ingénieur électricien (Bréguet), puis S.M.I.E. · <span class="badge">~40 cartes</span></div>
         <div class="bio">Neveu et filleul de Marguerite, fils d'Albert Decré et de Marie Geslin. Il perd son père en août 1914 et est mobilisé fin 1914, à 19 ans. Télégraphiste au 8e génie, il sert aux Dardanelles et à Salonique, est évacué à Toulon pour paludisme en 1917, puis rejoint le front français : bataille de la Somme avec la 162e division (mars-mai 1918), croix de guerre avec citations et médaille militaire. Sa carte du 12 novembre 1918, le lendemain de l'Armistice, est l'un des joyaux de la collection. Il épouse Suzanne « Suzon » Zinsius et s'installe à Paris comme ingénieur ; leurs fils Robert et Jean naissent dans les années 1920. Il dirigera plusieurs agences EDF (Rambouillet, Neauphle-le-Château, Bonnières-sur-Seine) et prendra sa retraite à Brunoy. Plusieurs cartes signées « Decré » qui lui étaient attribuées sont en réalité d'Édouard (voir ci-dessous).</div>
         <span class="portrait-src">Photo de son permis de conduire, 1914 — archives Gérard Decré</span>
+        <span class="see-cards">→ Voir ses cartes dans le catalogue</span>
       </div>
 
-      <div class="person-card">
+      <div class="person-card" data-sender="Marie Decré (belle-sœur de Marguerite)" title="Voir ses cartes" onclick="filterPerson(this)">
         <img class="portrait" src="documents/portrait_marie_geslin.jpg" alt="Marie Geslin, vers 1913">
         <div class="name">Marie Decré, née Geslin</div>
         <div class="meta">1862, Louverné – 1947, Cossé-le-Vivien · <span class="badge">34 cartes</span></div>
         <div class="bio">Belle-sœur de Marguerite : épouse d'Albert Decré, le frère de Marguerite, ingénieur des Ponts et Chaussées mort à Laval en août 1914 des suites d'un accident de chantier. Les deux femmes s'appellent « sœur » et signent « Ta sœur qui t'aime ». Fille d'Esprit Geslin, propriétaire de fours à chaux à Louverné et La Baconnière, elle hérite de Saint-Roch, grande propriété de Saint-Ouen-des-Toits, et de biens à Argentré venus de sa mère Adélaïde Goranflaux de la Giraudière. Veuve à 51 ans avec deux fils mobilisés, elle raconte depuis Cossé-le-Vivien le quotidien d'une mère de quatre enfants : Madeleine, qui restera dans la maison de Cossé, Georges, René, futur directeur de laiteries et fondateur de la laiterie-fromagerie de Courtenay (Loiret), et Marguerite « Didite ». Un lien fort qui traverse trente ans de correspondance.</div>
         <span class="portrait-src">Photo du banc de Cossé, vers 1913 — archives Gérard Decré</span>
+        <span class="see-cards">→ Voir ses cartes dans le catalogue</span>
       </div>
 
-      <div class="person-card">
+      <div class="person-card no-cards">
         <img class="portrait" src="documents/portrait_albert.jpg" alt="Albert Decré">
         <div class="name">Albert Decré</div>
         <div class="meta">1864, Laval – 13 août 1914, Laval · Ingénieur · <span class="badge">le frère</span></div>
@@ -851,28 +858,31 @@
         <span class="portrait-src">Portrait tiré de son permis de conduire de 1913 — archives Gérard Decré</span>
       </div>
 
-      <div class="person-card">
+      <div class="person-card" data-sender="Édouard Decré" title="Voir ses cartes" onclick="filterPerson(this)">
         <img class="portrait" src="documents/portrait_edouard.jpg" alt="Édouard Decré, vers 1913">
         <div class="name">Édouard Decré</div>
         <div class="meta">1872, Le Blanc – 27 mai 1924, † en mer · Commissaire de bord · <span class="badge">~5 cartes</span></div>
         <div class="bio">Alphonse Athanase Édouard Decré, cousin issu de germain d'Albert (leurs grands-pères étaient frères), né dans l'Indre, a beaucoup bourlingué : Bordeaux, Toulon, Brest. Son registre matricule le montre aux Messageries Maritimes dès 1897, commissaire à bord de l'<em>Atlantique</em> en 1902, embarqué sur le <em>Burdigala</em> en 1912, puis commissaire (le n° 2 du bord) des paquebots <em>Lutetia</em> et <em>Burdigala</em> de la Sud-Atlantique pendant la guerre, jusqu'au naufrage du <em>Burdigala</em> sur une mine au large de Kéa (Grèce) le 14 novembre 1916. Marié à Bordeaux en 1904, divorcé, père d'enfants d'un premier lit (carte n° 53, 1912), il épouse à Toulon, le 22 avril 1919, Yvonne Lemonnier, la fille de Marguerite. Deux enfants, Annick (Toulon, 8 novembre 1919) et Alain (Plougasnou, 2 septembre 1921), puis le drame : Yvonne meurt à Toulon le 15 décembre 1921, Édouard à bord de l'<em>Alba</em> au retour sur Bordeaux le 27 mai 1924 (décès transcrit à Bordeaux en juin). Les deux petits passent beaucoup de temps en nourrice ; Annick est élevée par sa grand-mère Marguerite à Ernée. Ses cartes, signées « E. Decré » et vouvoyant « ma chère Marguerite », étaient jusqu'ici attribuées à Georges.</div>
         <span class="portrait-src">Photo du banc de Cossé, vers 1913 — archives Gérard Decré</span>
+        <span class="see-cards">→ Voir ses cartes dans le catalogue</span>
       </div>
 
-      <div class="person-card">
+      <div class="person-card" data-sender="Yvonne Lemonnier" title="Voir ses cartes" onclick="filterPerson(this)">
         <img class="portrait" src="documents/portrait_yvonne.jpg" alt="Yvonne Lemonnier, vers 1911">
         <div class="name">Yvonne Lemonnier, épouse Decré</div>
         <div class="meta">1893, Ernée – 1921, Toulon (†28 ans) · <span class="badge">4 cartes</span></div>
         <div class="bio">Fille aînée de Marguerite et Michel, née dix ans avant Guy. Elle a 17 ans au décès de son père en 1910. Elle épouse Édouard Decré à Toulon le 22 avril 1919 ; Annick naît le 8 novembre 1919 à Toulon, Alain le 2 septembre 1921 à Plougasnou. Elle meurt à Toulon le 15 décembre 1921. Édouard la ramène à Laval, où elle repose dans le caveau Decré avec sa mère et son frère ; la pierre tombale porte « Yvonne Decré née Lemonnier, épouse d'Édouard Decré ». Après cette date, toute carte signée d'un enfant à « chère Maman » est de Guy.</div>
         <span class="portrait-src">Photo vers 1911, archives Gérard Decré</span>
+        <span class="see-cards">→ Voir ses cartes dans le catalogue</span>
       </div>
 
-      <div class="person-card">
+      <div class="person-card" data-sender="Marguerite « Didite » Decré" title="Voir ses cartes" onclick="filterPerson(this)">
         <img class="portrait" src="documents/portrait_marguerite.jpg" alt="Marguerite Decré, vers 1911">
         <div class="name">Marguerite « Didite » Decré</div>
         <div class="meta">1901, Cossé-le-Vivien · Institutrice, puis assistante sociale à Nantes · <span class="badge">9 cartes</span></div>
         <div class="bio">Benjamine d'Albert et Marie, nièce de Marguerite. Elle lui écrit dès 1915, à 14 ans, après une maladie (carte n° 248), puis régulièrement dans les années 1920 : nouvelles de « Geo », de « Suzon », de « maman », modèles de crochet, un accident d'automobile sans gravité. « Dédite » dans les cartes de sa mère.</div>
         <span class="portrait-src">Photo vers 1911, archives Gérard Decré</span>
+        <span class="see-cards">→ Voir ses cartes dans le catalogue</span>
       </div>
 
     </div>
@@ -1427,6 +1437,17 @@ function renderCatalog() {
   } else {
     pag.innerHTML = '';
   }
+}
+
+function filterPerson(el) {
+  const sel = document.getElementById('sender-filter');
+  const v = el.dataset.sender;
+  if (![...sel.options].some(o => o.value === v)) return;
+  document.getElementById('search-input').value = '';
+  sel.value = v;
+  currentPage = 1;
+  applyFilters();
+  document.getElementById('catalogue').scrollIntoView({behavior: 'smooth'});
 }
 
 function goPage(p) {
