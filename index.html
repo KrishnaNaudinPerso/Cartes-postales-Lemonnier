@@ -674,6 +674,67 @@
     .tree-level { margin-left: 1rem; padding-left: 1rem; }
     nav { gap: 1rem; }
   }
+
+  /* ===== COMMENTAIRE CONTEXTUEL (ajout septembre 2026) ===== */
+  .cc-cta { margin-top: 1.2rem; padding-top: 1rem; border-top: 1px dashed var(--sepia-dark); }
+  .cc-btn {
+    background: none; border: 1px solid var(--accent); color: var(--accent);
+    padding: 0.5rem 1rem; border-radius: 6px; font-size: 0.9rem; font-family: inherit;
+    cursor: pointer; line-height: 1.3;
+  }
+  .cc-btn:hover { background: var(--accent); color: #fff; }
+  .cc-btn:focus-visible { outline: 2px solid var(--blue-link); outline-offset: 2px; }
+  .cc-hint { font-size: 0.8rem; color: var(--ink-light); margin-top: 0.45rem; }
+
+  .cc-float {
+    position: fixed; right: 18px; bottom: 18px; z-index: 900;
+    background: var(--accent); color: #fff; border: none;
+    padding: 0.7rem 1.1rem; border-radius: 24px; font-size: 0.9rem; font-family: inherit;
+    cursor: pointer; box-shadow: 0 2px 10px var(--shadow);
+  }
+  .cc-float:hover { background: var(--ink); }
+  .cc-float:focus-visible { outline: 2px solid var(--blue-link); outline-offset: 2px; }
+
+  .cc-modal { display: none; position: fixed; inset: 0; z-index: 4000; }
+  .cc-modal.open { display: block; }
+  .cc-modal-backdrop { position: absolute; inset: 0; background: rgba(44,36,23,.55); }
+  .cc-modal-box {
+    position: relative; max-width: 540px; width: calc(100% - 32px);
+    margin: 5vh auto 0; max-height: 90vh; overflow-y: auto;
+    background: var(--card-bg); border-radius: 12px; padding: 1.6rem 1.7rem;
+    box-shadow: 0 8px 40px rgba(0,0,0,.3);
+  }
+  .cc-modal-box h3 { color: var(--accent); margin: 0 0 .2rem; font-size: 1.15rem; }
+  .cc-close {
+    position: absolute; top: 8px; right: 12px; background: none; border: none;
+    font-size: 1.7rem; line-height: 1; color: var(--ink-light); cursor: pointer;
+  }
+  .cc-ref {
+    background: var(--sepia); border-left: 3px solid var(--accent-light);
+    padding: .6rem .8rem; border-radius: 4px; font-size: .85rem;
+    color: var(--ink-light); margin: .8rem 0 1.1rem;
+  }
+  .cc-ref strong { color: var(--ink); }
+  .cc-modal label { display: block; font-weight: 600; margin: 0 0 .3rem; font-size: .92rem; }
+  .cc-modal input[type=text], .cc-modal input[type=email],
+  .cc-modal select, .cc-modal textarea {
+    width: 100%; padding: .55rem; border: 1px solid #ccc; border-radius: 6px;
+    font-size: 1rem; font-family: inherit; box-sizing: border-box; margin-bottom: .9rem;
+    background: #fff; color: var(--ink);
+  }
+  .cc-modal textarea { resize: vertical; }
+  .cc-send {
+    background: var(--accent); color: #fff; padding: .65rem 1.7rem; border: none;
+    border-radius: 8px; font-size: 1rem; font-family: inherit; cursor: pointer;
+  }
+  .cc-send[disabled] { opacity: .55; cursor: default; }
+  .cc-status { margin-top: .9rem; font-size: .9rem; min-height: 1.2em; }
+  .cc-status.ok { color: #2e6b32; }
+  .cc-status.ko { color: #a33; }
+  @media (max-width: 600px) {
+    .cc-modal-box { margin-top: 0; border-radius: 0; min-height: 100vh; }
+    .cc-float { right: 12px; bottom: 12px; padding: .6rem .9rem; font-size: .85rem; }
+  }
 </style>
 </head>
 <body>
@@ -1280,10 +1341,59 @@
           <div class="lb-label">Témoignage familial</div>
           <div class="lb-temoignage" id="lb-temoignage"></div>
         </div>
+        <div class="lb-section cc-cta">
+          <button type="button" class="cc-btn" onclick="ccOpenCard()">Commenter cette carte</button>
+          <div class="cc-hint">Une correction, un nom, une date&nbsp;? Le numéro de la carte et son
+          lien sont joints tout seuls.</div>
+        </div>
       </div>
     </div>
   </div>
 </div>
+
+
+<!-- ===== COMMENTAIRE CONTEXTUEL : fenetre (ajout septembre 2026) ===== -->
+<div class="cc-modal" id="cc-modal" role="dialog" aria-modal="true" aria-labelledby="cc-title">
+  <div class="cc-modal-backdrop" onclick="ccClose()"></div>
+  <div class="cc-modal-box">
+    <button class="cc-close" onclick="ccClose()" aria-label="Fermer">&times;</button>
+    <h3 id="cc-title">Commenter</h3>
+    <div class="cc-ref" id="cc-ref"></div>
+
+    <form id="cc-form" action="https://formspree.io/f/mkopjpbv" method="POST">
+      <label for="cc-nom">Votre nom</label>
+      <input type="text" id="cc-nom" name="nom" required>
+
+      <label for="cc-mail">Votre email</label>
+      <input type="email" id="cc-mail" name="_replyto" required>
+
+      <label for="cc-sujet">Sujet</label>
+      <select id="cc-sujet" name="sujet">
+        <option value="transcription">Correction de transcription</option>
+        <option value="date">Date / période</option>
+        <option value="personnage">Identification d'un personnage</option>
+        <option value="genealogie">Généalogie / lien de parenté</option>
+        <option value="lieu">Lieu / localisation</option>
+        <option value="autre">Autre</option>
+      </select>
+
+      <label for="cc-msg">Votre commentaire</label>
+      <textarea id="cc-msg" name="message" rows="5" required
+        placeholder="Ce que vous reconnaissez, corrigez ou souhaitez signaler…"></textarea>
+
+      <input type="text" name="_gotcha" style="display:none">
+      <input type="hidden" name="carte"    id="cc-h-carte">
+      <input type="hidden" name="contexte" id="cc-h-contexte">
+      <input type="hidden" name="lien"     id="cc-h-lien">
+      <input type="hidden" name="page"     id="cc-h-page">
+      <input type="hidden" name="_subject" id="cc-h-subject">
+
+      <button type="submit" class="cc-send" id="cc-send">Envoyer</button>
+      <div class="cc-status" id="cc-status" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+</div>
+<button class="cc-float" onclick="ccOpenPage()" title="Envoyer un commentaire sur cette page">Commenter</button>
 
 <!-- FOOTER -->
 <footer>
@@ -1571,6 +1681,94 @@ function openCardByHash() {
 // Run on load and on hash change
 openCardByHash();
 window.addEventListener('hashchange', openCardByHash);
+
+// ===== COMMENTAIRE CONTEXTUEL (ajout septembre 2026) =====
+var ccLockedByLightbox = false;
+
+function ccOpen(ref) {
+  document.getElementById('cc-title').textContent = ref.titre;
+  document.getElementById('cc-ref').innerHTML = ref.resume;
+  document.getElementById('cc-h-carte').value = ref.carte || '';
+  document.getElementById('cc-h-contexte').value = ref.contexte || '';
+  document.getElementById('cc-h-lien').value = ref.lien || location.href;
+  document.getElementById('cc-h-page').value = document.title;
+  document.getElementById('cc-h-subject').value = ref.subject;
+  var st = document.getElementById('cc-status');
+  st.textContent = ''; st.className = 'cc-status';
+  document.getElementById('cc-send').disabled = false;
+  ccLockedByLightbox = document.body.style.overflow === 'hidden';
+  document.getElementById('cc-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(function () { document.getElementById('cc-nom').focus(); }, 60);
+}
+
+function ccClose() {
+  document.getElementById('cc-modal').classList.remove('open');
+  if (!ccLockedByLightbox) document.body.style.overflow = '';
+}
+
+// Commenter la page courante (bouton flottant)
+function ccOpenPage() {
+  ccOpen({
+    titre: 'Commenter cette page',
+    resume: '<strong>' + document.title + '</strong>',
+    carte: '', contexte: 'Page : ' + document.title,
+    lien: location.href,
+    subject: 'Commentaire \u2014 ' + document.title
+  });
+}
+
+// Envoi en AJAX : on reste sur la carte au lieu d'etre renvoye sur Formspree
+document.getElementById('cc-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var f = e.target, st = document.getElementById('cc-status'), b = document.getElementById('cc-send');
+  b.disabled = true; st.className = 'cc-status'; st.textContent = 'Envoi\u2026';
+  fetch(f.action, { method: 'POST', body: new FormData(f), headers: { Accept: 'application/json' } })
+    .then(function (r) {
+      if (!r.ok) throw new Error('http');
+      st.className = 'cc-status ok';
+      st.textContent = 'Merci, votre commentaire est bien parti.';
+      f.querySelector('#cc-msg').value = '';
+      setTimeout(ccClose, 1800);
+    })
+    .catch(function () {
+      st.className = 'cc-status ko';
+      st.textContent = "L'envoi a \u00e9chou\u00e9. R\u00e9essayez, ou \u00e9crivez-moi directement.";
+      b.disabled = false;
+    });
+});
+
+document.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && document.getElementById('cc-modal').classList.contains('open')) {
+    e.stopPropagation(); ccClose();
+  }
+}, true);
+
+// Commenter la carte actuellement ouverte dans la visionneuse
+function ccOpenCard() {
+  var c = filteredCards[currentLbIndex];
+  if (!c) return;
+  var bits = [];
+  if (c.date) bits.push(c.date);
+  if (c.exp)  bits.push('de ' + c.exp);
+  if (c.dest) bits.push('\u00e0 ' + c.dest);
+  var lien = location.origin + location.pathname + '#card-' + c.n;
+  ccOpen({
+    titre: 'Commenter la carte n\u00b0 ' + c.n,
+    resume: '<strong>Carte n\u00b0 ' + c.n + '</strong>'
+            + (bits.length ? '<br>' + escapeHtml(bits.join(' \u2014 ')) : '')
+            + '<br><span style="opacity:.75">Le numéro, la date, les correspondants et le lien '
+            + 'direct vers cette carte sont joints automatiquement.</span>',
+    carte: c.n,
+    contexte: 'Carte n\u00b0 ' + c.n
+              + ' | date : ' + (c.date || 'non datée')
+              + ' | expéditeur : ' + (c.exp || 'non renseigné')
+              + ' | destinataire : ' + (c.dest || 'non renseigné'),
+    lien: lien,
+    subject: 'Commentaire \u2014 carte n\u00b0 ' + c.n
+  });
+}
+
 </script>
 
 <!-- ========== SECTION COMMENTAIRES ========== -->
