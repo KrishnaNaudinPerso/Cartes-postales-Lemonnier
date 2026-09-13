@@ -547,6 +547,70 @@
     transform: scale(2);
     cursor: zoom-out;
   }
+  /* ---- Visionneuse plein écran ---- */
+  .viewer {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 5000;
+    background: #14110c;
+    flex-direction: column;
+    touch-action: none;
+  }
+  .viewer.open { display: flex; }
+  .viewer-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.5rem 0.7rem;
+    background: rgba(0,0,0,0.55);
+    color: #f5f0e8;
+    font-size: 0.85rem;
+  }
+  .viewer-title { flex: 1 1 auto; min-width: 8rem; font-weight: 600; }
+  .viewer-tools { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+  .viewer-tools button {
+    background: rgba(255,255,255,0.12);
+    color: #f5f0e8;
+    border: 1px solid rgba(255,255,255,0.18);
+    border-radius: 4px;
+    padding: 0.3rem 0.6rem;
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.85rem;
+    line-height: 1.2;
+    cursor: pointer;
+  }
+  .viewer-tools button:hover { background: rgba(255,255,255,0.25); }
+  .viewer-tools button.active { background: var(--accent-light); color: #2c2417; font-weight: 600; }
+  .viewer-tools button:focus-visible { outline: 2px solid var(--accent-light); outline-offset: 1px; }
+  .viewer-stage {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+    cursor: grab;
+  }
+  .viewer-stage.dragging { cursor: grabbing; }
+  #viewer-img {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform-origin: center center;
+    will-change: transform;
+    user-select: none;
+    -webkit-user-drag: none;
+  }
+  .viewer-hint {
+    padding: 0.4rem 0.7rem;
+    background: rgba(0,0,0,0.55);
+    color: rgba(245,240,232,0.75);
+    font-size: 0.75rem;
+    text-align: center;
+  }
+  @media (max-width: 700px) {
+    .viewer-title { flex-basis: 100%; }
+    .viewer-hint { font-size: 0.7rem; }
+  }
   .lb-img-zoom-hint {
     position: absolute;
     bottom: 0.5rem;
@@ -1425,12 +1489,12 @@
     <div class="lightbox-body">
       <div class="lightbox-images">
         <div class="lb-img-tabs">
-          <button class="lb-tab active" onclick="showTab('verso', this)">Verso (message)</button>
-          <button class="lb-tab" onclick="showTab('recto', this)">Recto (image)</button>
+          <button class="lb-tab active" onclick="showTab('verso', this)">Côté adresse (message)</button>
+          <button class="lb-tab" onclick="showTab('recto', this)">Côté image</button>
         </div>
         <div class="lb-img-container" id="lb-img-container">
           <img id="lb-image" src="" alt="Carte postale" />
-          <div class="lb-img-zoom-hint">Cliquez pour zoomer</div>
+          <div class="lb-img-zoom-hint">Cliquez pour agrandir</div>
         </div>
       </div>
       <div class="lightbox-text">
@@ -1514,6 +1578,26 @@
     </form>
   </div>
 </div>
+<div class="viewer" id="viewer" role="dialog" aria-modal="true" aria-label="Visionneuse">
+  <div class="viewer-bar">
+    <span class="viewer-title" id="viewer-title"></span>
+    <div class="viewer-tools">
+      <button type="button" id="vw-verso" onclick="viewerSide('verso')">Côté adresse</button>
+      <button type="button" id="vw-recto" onclick="viewerSide('recto')">Côté image</button>
+      <button type="button" onclick="viewerRotate(-90)" title="Rotation à gauche">⟲</button>
+      <button type="button" onclick="viewerRotate(90)" title="Rotation à droite (R)">⟳</button>
+      <button type="button" onclick="viewerZoomAt(1/1.3)" title="Dézoomer (−)">−</button>
+      <button type="button" onclick="viewerZoomAt(1.3)" title="Zoomer (+)">+</button>
+      <button type="button" onclick="viewerFit()" title="Ajuster à l'écran (0)">Ajuster</button>
+      <button type="button" onclick="viewerClose()" title="Fermer (Échap)">✕</button>
+    </div>
+  </div>
+  <div class="viewer-stage" id="viewer-stage">
+    <img id="viewer-img" alt="Carte postale en plein écran">
+  </div>
+  <div class="viewer-hint">Molette ou pincement : zoom · glisser : déplacer · R : rotation · 0 : ajuster · Échap : fermer</div>
+</div>
+
 <button class="cc-float" onclick="ccOpenPage()" title="Envoyer un commentaire sur cette page">Commenter</button>
 
 <!-- FOOTER -->
@@ -1732,7 +1816,6 @@ function openLightbox(index) {
 
   const img = document.getElementById('lb-image');
   img.src = imgPath(c.n, 'verso');
-  img.classList.remove('zoomed');
 
   document.querySelectorAll('.lb-tab').forEach((t, i) => t.classList.toggle('active', i === 0));
 
@@ -1756,18 +1839,139 @@ function showTab(side, btn) {
   currentSide = side;
   const c = filteredCards[currentLbIndex];
   document.getElementById('lb-image').src = imgPath(c.n, side);
-  document.getElementById('lb-image').classList.remove('zoomed');
   document.querySelectorAll('.lb-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
 }
 
-// Zoom on image click
+// Clic sur l'image : ouvre la visionneuse plein écran
 document.getElementById('lb-image').addEventListener('click', function() {
-  this.classList.toggle('zoomed');
+  viewerOpen();
 });
+
+// ===== VISIONNEUSE PLEIN ECRAN =====
+const vw = { scale: 1, fit: 1, rot: 0, tx: 0, ty: 0, side: 'verso', n: null };
+const vwEl = document.getElementById('viewer');
+const vwImg = document.getElementById('viewer-img');
+const vwStage = document.getElementById('viewer-stage');
+
+function viewerApply() {
+  vwImg.style.transform = `translate(-50%, -50%) translate(${vw.tx}px, ${vw.ty}px) rotate(${vw.rot}deg) scale(${vw.scale})`;
+}
+function viewerFit() {
+  const nw = vwImg.naturalWidth || 1, nh = vwImg.naturalHeight || 1;
+  const r = ((vw.rot % 360) + 360) % 360;
+  const bw = (r === 90 || r === 270) ? nh : nw;
+  const bh = (r === 90 || r === 270) ? nw : nh;
+  const pad = 24;
+  vw.fit = Math.min((vwStage.clientWidth - pad) / bw, (vwStage.clientHeight - pad) / bh);
+  if (!isFinite(vw.fit) || vw.fit <= 0) vw.fit = 1;
+  vw.scale = vw.fit; vw.tx = 0; vw.ty = 0;
+  viewerApply();
+}
+function viewerZoomAt(k, px, py) {
+  const min = vw.fit * 0.5, max = vw.fit * 14;
+  let ns = Math.min(max, Math.max(min, vw.scale * k));
+  k = ns / vw.scale;
+  if (px === undefined) { px = 0; py = 0; }
+  vw.tx = k * vw.tx + (1 - k) * px;
+  vw.ty = k * vw.ty + (1 - k) * py;
+  vw.scale = ns;
+  viewerApply();
+}
+function viewerRotate(deg) {
+  vw.rot = (vw.rot + deg) % 360;
+  viewerFit();
+}
+function viewerSide(side) {
+  vw.side = side;
+  vwImg.src = imgPath(vw.n, side);
+  document.getElementById('vw-verso').classList.toggle('active', side === 'verso');
+  document.getElementById('vw-recto').classList.toggle('active', side === 'recto');
+}
+function viewerOpen(side) {
+  const c = filteredCards[currentLbIndex];
+  if (!c) return;
+  vw.n = c.n; vw.rot = 0;
+  document.getElementById('viewer-title').textContent =
+    `Carte n° ${c.n}` + (c.date ? ' — ' + c.date : '');
+  vwEl.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  viewerSide(side || currentSide || 'verso');
+}
+function viewerClose() {
+  vwEl.classList.remove('open');
+  if (!document.getElementById('lightbox').classList.contains('open')) document.body.style.overflow = '';
+}
+function viewerIsOpen() { return vwEl.classList.contains('open'); }
+
+vwImg.addEventListener('load', viewerFit);
+window.addEventListener('resize', function () { if (viewerIsOpen()) viewerFit(); });
+
+// molette : zoom centré sur le curseur
+vwStage.addEventListener('wheel', function (e) {
+  if (!viewerIsOpen()) return;
+  e.preventDefault();
+  const r = vwStage.getBoundingClientRect();
+  const px = e.clientX - r.left - r.width / 2;
+  const py = e.clientY - r.top - r.height / 2;
+  viewerZoomAt(e.deltaY < 0 ? 1.15 : 1 / 1.15, px, py);
+}, { passive: false });
+
+// double-clic : bascule ajusté / x3
+vwStage.addEventListener('dblclick', function (e) {
+  const r = vwStage.getBoundingClientRect();
+  const px = e.clientX - r.left - r.width / 2;
+  const py = e.clientY - r.top - r.height / 2;
+  if (vw.scale > vw.fit * 1.05) viewerFit(); else viewerZoomAt(3, px, py);
+});
+
+// déplacement à la souris et au doigt, pincement à deux doigts
+const vwPointers = new Map();
+let vwPinch = null;
+vwStage.addEventListener('pointerdown', function (e) {
+  vwStage.setPointerCapture(e.pointerId);
+  vwPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  vwStage.classList.add('dragging');
+  if (vwPointers.size === 2) {
+    const p = [...vwPointers.values()];
+    vwPinch = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) || 1;
+  }
+});
+vwStage.addEventListener('pointermove', function (e) {
+  const prev = vwPointers.get(e.pointerId);
+  if (!prev) return;
+  const dx = e.clientX - prev.x, dy = e.clientY - prev.y;
+  vwPointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (vwPointers.size === 2 && vwPinch) {
+    const p = [...vwPointers.values()];
+    const d = Math.hypot(p[0].x - p[1].x, p[0].y - p[1].y) || 1;
+    const r = vwStage.getBoundingClientRect();
+    const cx = (p[0].x + p[1].x) / 2 - r.left - r.width / 2;
+    const cy = (p[0].y + p[1].y) / 2 - r.top - r.height / 2;
+    viewerZoomAt(d / vwPinch, cx, cy);
+    vwPinch = d;
+  } else if (vwPointers.size === 1) {
+    vw.tx += dx; vw.ty += dy; viewerApply();
+  }
+});
+function vwEndPointer(e) {
+  vwPointers.delete(e.pointerId);
+  if (vwPointers.size < 2) vwPinch = null;
+  if (vwPointers.size === 0) vwStage.classList.remove('dragging');
+}
+vwStage.addEventListener('pointerup', vwEndPointer);
+vwStage.addEventListener('pointercancel', vwEndPointer);
 
 // Keyboard nav
 document.addEventListener('keydown', e => {
+  if (viewerIsOpen()) {
+    if (e.key === 'Escape') { viewerClose(); return; }
+    if (e.key === 'r' || e.key === 'R') { viewerRotate(e.shiftKey ? -90 : 90); return; }
+    if (e.key === '+' || e.key === '=') { viewerZoomAt(1.3); return; }
+    if (e.key === '-') { viewerZoomAt(1 / 1.3); return; }
+    if (e.key === '0') { viewerFit(); return; }
+    return;
+  }
   if (!document.getElementById('lightbox').classList.contains('open')) return;
   if (e.key === 'Escape') closeLightbox();
   if (e.key === 'ArrowLeft') navCard(-1);
